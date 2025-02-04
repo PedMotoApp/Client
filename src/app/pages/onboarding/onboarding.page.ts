@@ -64,16 +64,7 @@ export class OnboardingPage implements OnInit {
   }
 
   navigate() {
-    if (this.dataService.getUserInfo().userType === 1) {
-      this.uiUtils.presentAlertSuccess("Bem-vindo!", "Você está pronto para começar.");
-      this.router.navigateByUrl('/tabs');
-    } else {
-      this.uiUtils.presentAlertSuccess("Cadastro Atualizado", "Agora é só entrar e começar a trabalhar!");
-      this.auth.signOut()
-      .then(() => {
-        this.router.navigate(['tabs']);
-      });
-    }
+    this.modalCtrl.dismiss()
   }
 
   closeOnboarding() {
