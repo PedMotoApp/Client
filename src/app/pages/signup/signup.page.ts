@@ -50,7 +50,16 @@ export class SignupPage implements OnInit {
 
       try {
         await this.authService.signupUser(email, password, this.dataInfo.appUserType, tel); // Aqui, 1 é o tipo de usuário
-        this.router.navigate(['/home']);
+
+        this.dataInfo.isHome = true;
+        let page = '/home';
+    
+        if(this.dataInfo.appUserType === 2){
+          page = '/driver';
+        }
+        
+        this.router.navigate([page]);
+
       } catch (error) {
         console.error('Signup error:', error);
         if (error.code === 'auth/email-already-in-use') {
