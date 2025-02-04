@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>       
+    </ion-buttons>
+    <ion-title>{{dataText.getText('wallet')}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding wallet-container">  
+
+  <ion-list>
+    <ion-card class="prices-container explanation-card">
+      <ion-card-header>
+        <ion-card-title>{{dataText.getText('walletBalance')}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <h2 class="current-balance">R$ {{ currentBalance | number: '1.2-2' }}</h2>
+      </ion-card-content>
+    </ion-card>
+    
+    <!-- Contêiner para o Checkout Transparente -->
+    <div id="paymentBrick_container"></div>
+  </ion-list>
+</ion-content>

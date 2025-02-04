@@ -1,0 +1,15 @@
+ion-modal {
+    --width: 90%;
+    --height: 50%;
+    --border-radius: 10px;
+    --background: var(--ion-color-light);
+  }
+  
+  ion-item {
+    cursor: pointer;
+  }
+  
+  ion-item:hover {
+    background-color: rgba(0, 115, 230, 0.1);
+  }
+  

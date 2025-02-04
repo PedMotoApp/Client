@@ -1,0 +1,63 @@
+{
+  
+  "rules": {
+    
+    "userProfile": {
+      "$state": {
+        ".indexOn" : ["userType", "uid"]
+      	}    
+	  },
+    "notificationsAll": {
+      "$state": {
+        "$year": {
+           "$month": {
+							".indexOn" : ["code", "requestKey", "uid", "workerInfo/uid", "status", "driverUid"]
+      			}     
+      		}                    
+      	}    
+	  },
+    "notificationsDelivery": {
+      "$state": {
+        "$year": {
+           "$month": {
+							".indexOn" : ["emailProfissionalEntrega"]
+      			}     
+      		}                    
+      	}    
+	  },
+    "workRequest": {
+      ".indexOn" : ["uid"]   
+	  },   
+    "reports": {
+    "$state": {
+      "$year": {
+         "$month": {
+            ".indexOn" : ["uid"]
+          }     
+        }                    
+      }    
+	  },
+    "userCreditsDaily": {
+    "$state": {               
+        ".indexOn" : ["uid"]                             
+      }    
+  },
+    
+     "cards": {
+      ".read": "true",
+      ".write": "true"
+    },
+    "sales": {
+      ".read": "true",
+      ".write": "true"
+    },
+    "participants": {
+      ".read": "true",
+      ".write": "true"
+    },
+            
+    ".read": "true",
+    ".write": "true"
+ 
+  }
+}

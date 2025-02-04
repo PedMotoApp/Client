@@ -1,0 +1,43 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h1>Detalhes do Pedido</h1>
+    <ion-icon name="close-outline" (click)="dismiss()"></ion-icon>
+  </div>
+
+  <div class="info-card">
+    <h2>Informações Gerais</h2>
+    <p><strong>Origem:</strong> Praça dos Três Poderes, Brasília - DF</p>
+    <p><strong>Destino:</strong> Parque da Cidade Sarah Kubitschek, Brasília - DF</p>
+    <p><strong>Valor Total:</strong> R$ 17,80</p>
+    <p><strong>Lucro:</strong> R$ 1,78</p>
+  </div>
+
+  <div class="delivery-points">
+    <h3>Pontos de Entrega</h3>
+    <div class="delivery-point-card" *ngFor="let point of order.dropPoints; let i = index">
+      <h4>Ponto {{ i + 1 }}</h4>
+      <p><strong>Descrição:</strong> {{ point.description }}</p>
+      <p><strong>Referência:</strong> {{ point.reference || 'N/A' }}</p>
+      <p><strong>Instruções:</strong> {{ point.instructions || 'N/A' }}</p>
+      <p><strong>Responsável:</strong> {{ point.responsible || 'N/A' }}</p>
+      <p><strong>Pagamento:</strong> {{ point.payment || 'N/A' }}</p>
+      <p class="highlight">
+        <strong>Distância Total:</strong> {{ point.totalDistance || 'N/A' }} km
+      </p>
+      <p class="highlight">
+        <strong>Tempo Estimado:</strong> {{ point.totalTime || 'N/A' }} mins
+      </p>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+<ion-footer>
+  <ion-button expand="block" color="success" (click)="acceptOrder()">
+    Aceitar 
+  </ion-button>
+</ion-footer>

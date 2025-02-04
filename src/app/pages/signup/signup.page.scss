@@ -1,0 +1,75 @@
+/* Fundo claro para o conteúdo principal */
+.light-background {
+    --ion-background-color: #f0f4f7;
+    color: #333;
+  }
+  
+  /* Define o estilo para a logo */
+  .logo {
+    display: block;
+    margin: 0 auto;
+    width: 200px; /* Tamanho igual ao da página de login */
+    height: auto;
+    margin-top: 50px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos para o item de input no formulário */
+  .input-item {
+    --background: #ffffff;
+    --border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+  }
+  
+  ion-input {
+    color: #333;
+    font-size: 1em;
+  }
+  
+  /* Botão de envio */
+  ion-button {
+    margin-top: 20px;
+    --background: #4CAF50; /* Verde suave */
+    --background-activated: #45a049;
+    --border-radius: 8px;
+    height: 45px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* Estilo do rodapé */
+  ion-footer {
+    padding-top: 20px;
+    text-align: center;
+  
+    ion-row {
+      --ion-padding-start: 0;
+      --ion-padding-end: 0;
+      color: #0073e6;
+  
+      small {
+        cursor: pointer;
+        color: #0073e6;
+        font-weight: bold;
+      }
+  
+      small:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  /* Responsividade */
+  @media (max-width: 600px) {
+    .logo {
+      width: 150px;
+    }
+  
+    ion-button {
+      height: 40px;
+    }
+  }
+  

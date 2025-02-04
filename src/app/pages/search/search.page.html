@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="header-title">
+      {{ searching ? dataText.getText('addToAddress') : dataText.getText('organize') }}
+    </ion-title>    
+    <ion-buttons slot="end">
+      <ion-button (click)="addAddress()">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="dev()"   *ngIf="dataService.isDev">
+        <ion-icon slot="icon-only" name="bug"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding search-page search-container">  
+
+  <!-- Input Field for Address -->
+  <ion-card *ngIf="searching" class="input-card">
+    <ion-item lines="none" class="to">
+      <ion-input
+        type="text"
+        [(ngModel)]="toAddress"
+        placeholder="{{ dataText.getText('enterAddress') }}"
+        (keyup.enter)="onEnter('toAddress')"
+        class="address-input"
+      ></ion-input>
+      <ion-button fill="clear" (click)="onEnter('toAddress')">
+        <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-card>  
+
+  <!-- Address Suggestions -->
+  <ion-list *ngIf="searching" class="autocomplete-list">
+    <ion-item
+      *ngFor="let address of autocompleteItemsTo"
+      lines="none"
+      (click)="selectAddress(address)"
+      class="autocomplete-item"
+    >
+      <ion-icon slot="start" name="location-outline" color="primary"></ion-icon>
+      {{ address.description }}
+    </ion-item>
+  </ion-list>
+    
+  <ion-list *ngIf="!searching" class="address-list">
+    <ion-reorder-group disabled="false" (ionItemReorder)="reorderDropPoints($event)">
+      <ion-card *ngFor="let address of dataService.userInfo.dropPoints; let i = index" class="address-card">
+        <ion-card-header class="card-header">
+          <ion-title *ngIf="address.startPoint">{{ dataText.getText('collectPoint') }}</ion-title>
+          <ion-title *ngIf="address.isReturn" color="success">{{ dataText.getText('returnPoint') }}</ion-title>
+          <ion-title *ngIf="!address.isReturn && !address.startPoint" color="success">{{ dataText.getText('delivery') }}</ion-title>
+        </ion-card-header>
+        <ion-card-content style="padding-top: 0.5rem;">
+          <p><strong>{{ dataText.getText('address') }}:</strong> {{ address.description }}</p>
+          <p *ngIf="address.reference"><strong>{{ dataText.getText('reference') }}:</strong> {{ address.reference }}</p>
+          <p *ngIf="address.responsible"><strong>{{ dataText.getText('responsible') }}:</strong> {{ address.responsible }}</p>
+          <p *ngIf="address.instructions"><strong>{{ dataText.getText('instructions') }}:</strong> {{ address.instructions }}</p>
+          <p *ngIf="address.payment"><strong>{{ dataText.getText('payment') }}:</strong> {{ address.payment }}</p>
+          <p *ngIf="address.charge"><strong>{{ dataText.getText('charge') }}:</strong> {{ dataText.getText('appCurrency') }}{{ address.charge }}</p>        
+          <p *ngIf="address.finalPassword"><strong>{{ dataText.getText('password') }}:</strong> {{ address.finalPassword }}</p>
+          <p *ngIf="address.calculatedDistance"><strong>{{ dataText.getText('distance') }}:</strong> {{ address.calculatedDistance.toFixed(2) }} km </p>
+          <p *ngIf="address.distanceFromStart"><strong>{{ dataText.getText('distanceFromStart') }}:</strong> {{ address.distanceFromStart.toFixed(2) }} km </p>
+          <p *ngIf="address.estimatedTime"><strong>{{ dataText.getText('timeToNext') }}:</strong> {{ round(address.estimatedTime) }} min</p>
+          <p *ngIf="address.timeFromStart"><strong>{{ dataText.getText('timeFromStart') }}:</strong> {{ round(address.timeFromStart) }} min</p>
+        </ion-card-content>
+        <ion-row class="address-actions">
+          <ion-col>
+            <ion-button fill="outline" color="primary" size="small" (click)="addPayment(address)">
+              <ion-icon slot="start" name="create-outline"></ion-icon>
+              {{ dataText.getText('payment') }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button fill="outline" color="primary" size="small" (click)="addAdditionalInfo(address)">
+              <ion-icon slot="start" name="create-outline"></ion-icon>
+              {{ dataText.getText('addInfo') }}
+            </ion-button>
+          </ion-col>
+          <ion-col *ngIf="!address.startPoint">
+            <ion-button fill="outline" color="danger" size="small" (click)="removeDropPoint(address)">
+              <ion-icon slot="start" name="trash-outline"></ion-icon>
+              {{ dataText.getText('remove') }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-card>
+    </ion-reorder-group>
+  </ion-list>
+    
+  <ion-row class="button-row">    
+    <ion-col size="12">
+      <ion-button expand="block" fill="solid" color="success" (click)="next()" class="action-button">
+        <ion-icon slot="start" name="arrow-forward-outline"></ion-icon>
+        {{ dataText.getText('next') }}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+      
+</ion-content>

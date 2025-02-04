@@ -1,0 +1,65 @@
+.onboarding-container {
+    --background: #f8f9fa; /* Fundo claro e agradável */
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .onboarding-slides {
+    height: 100%;
+    position: relative;
+  
+    .onboarding-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+  
+      .slide-background {
+        width: 90%;
+        max-width: 350px;
+        height: auto;
+        object-fit: contain;
+        margin-bottom: 20px;
+      }
+  
+      .slide-overlay {
+        position: relative;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 10px;
+        width: 90%;
+  
+        h2 {
+          font-size: 22px;
+          font-weight: bold;
+          color: #ff6600; /* Cor do Motok */
+          margin-bottom: 10px;
+        }
+  
+        p {
+          font-size: 16px;
+          color: #333;
+          padding: 0 10px;
+        }
+      }
+    }
+  
+    .close-button-container {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  
+  .action-button {
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    --background: #ff6600;
+    --color: #ffffff;
+  }
+  

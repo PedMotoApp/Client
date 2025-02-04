@@ -1,0 +1,57 @@
+.order-details-page {
+    --background: #f8f9fa;
+  }
+  
+  .status-card {
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .drop-points-list {
+    margin-top: 1rem;
+  }
+  
+
+  
+  .footer-buttons {
+    padding: 1rem;
+  }
+  
+
+  .drop-point-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+  }
+  
+  ion-footer {
+    margin-top: 10px;
+  }
+  
+  ion-button {
+    font-size: 14px;
+  }
+  
+  .hero-image {
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    filter: blur(5px) brightness(0.8);
+  } 
+
+
+
+
+
+ion-content.home-container {
+  --background: url("../../../assets/images/background.png") no-repeat center center / cover;  
+  overflow-y: auto; 
+  max-height: 100vh;
+}

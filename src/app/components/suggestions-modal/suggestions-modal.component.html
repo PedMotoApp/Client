@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Selecione uma opção</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item
+      *ngFor="let suggestion of suggestions"
+      (click)="selectSuggestion(suggestion)"
+      tappable
+    >
+      {{ suggestion.description }}
+    </ion-item>
+  </ion-list>
+</ion-content>

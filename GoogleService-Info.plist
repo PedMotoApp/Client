@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>586536055929-hi8e3mcisnms0to61ahfg58qota23hpe.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.586536055929-hi8e3mcisnms0to61ahfg58qota23hpe</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBbwdH1rBftMlHf4QwqJtfhZI6HDaxRyZc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>586536055929</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.dbltecnologia.motok</string>
+	<key>PROJECT_ID</key>
+	<string>motok-7d13a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>motok-7d13a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:586536055929:ios:ee289185f8f656c1fb10a8</string>
+	<key>DATABASE_URL</key>
+	<string>https://motok-7d13a-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

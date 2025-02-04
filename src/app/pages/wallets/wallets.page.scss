@@ -1,0 +1,43 @@
+.wallet-page {
+  
+
+  
+  .prices-container {
+    margin-bottom: 1rem !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .table-title {
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+  
+  .explanation-card {
+    margin-top: 1rem !important;
+    background-color: #e3f2fd !important;
+    border-left: 4px solid #2196f3 !important;
+    padding: 1rem !important;
+  }
+
+  
+  .current-balance {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--ion-color-success);
+    text-align: center;
+  }
+
+
+}
+
+
+
+ion-content.wallets-container {
+  --background: url("../../../assets/images/background.png") no-repeat center center / cover;  
+  overflow-y: auto; 
+  max-height: 100vh;
+}
+

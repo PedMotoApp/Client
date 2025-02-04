@@ -1,0 +1,248 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goToProfile()">
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Motok</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="dev()" *ngIf="dataService.isDev">
+        <ion-icon slot="icon-only" name="bug"></ion-icon>
+      </ion-button>
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding home-container">  
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="!fromPrices" class="input-section">
+    <form [formGroup]="signupForm" (ngSubmit)="navigateToSearchPage()">
+      <div class="input-section">
+        <ion-item class="input-field">
+          <ion-label position="stacked">Origem</ion-label>
+          <ion-input
+            id="fromAddress"
+            type="text"
+            formControlName="fromAddress"
+            placeholder="Digite o ponto de partida"
+            (keyup)="onDebounce('fromAddress')"
+            (focus)="onDebounce('fromAddress')"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item class="input-field">
+          <ion-label position="stacked">Destino</ion-label>
+          <ion-input
+            id="toAddress"
+            type="text"
+            formControlName="toAddress"
+            placeholder="Digite o destino principal"
+            (keyup)="onDebounce('toAddress')"
+            (focus)="onDebounce('toAddress')"
+          ></ion-input>
+        </ion-item>
+
+        <div formArrayName="additionalDestinations">
+          <ion-item *ngFor="let destination of additionalDestinations.controls; let i = index" [formGroupName]="i" class="input-field">
+            <ion-label position="stacked">Destino Adicional {{ i + 1 }}</ion-label>
+            <ion-input
+              type="text"
+              formControlName="address"
+              placeholder="Digite o destino adicional"
+              (keyup)="onEnter('additionalDestinations_' + i)"
+              (focus)="onEnter('additionalDestinations_' + i)"
+            ></ion-input>
+            <ion-button fill="clear" color="danger" slot="end" (click)="removeDestination(i)">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="block" color="primary" (click)="addDestination()">
+              <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+              Adicionar
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="6">
+            <ion-button expand="block" color="secondary" (click)="checkBalanceBeforeProceed()" [disabled]="!signupForm.valid">
+              <ion-icon slot="start" name="compass-outline"></ion-icon>
+              Organizar
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="6">
+            <ion-button expand="block" color="primary" (click)="goToWallets()">
+              <ion-icon slot="start" name="wallet-outline"></ion-icon>
+              Carteira
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="6">
+            <ion-button expand="block" color="primary" (click)="goPageHistory()">
+              <ion-icon slot="start" name="time-outline"></ion-icon>
+              Histórico
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </form>
+  </div>
+
+  <ion-card class="prices-container explanation-card" *ngIf="msgInfoVisible && !fromPrices">
+    <ion-card-content>
+      <p>
+        <strong>{{ currentMessage }}</strong><br />
+      </p>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-card class="prices-container balance-card" *ngIf="!msgInfoVisible && fromPrices">
+    <ion-card-content>
+      <!-- Saldo -->
+      <ion-row class="info-row">
+        <ion-col size="auto">
+          <ion-icon name="wallet-outline"></ion-icon>
+          <span class="info-text">{{ dataText.getText('walletBalance') }}</span>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <strong class="info-value green-text">R$ {{ currentBalance | number: '1.2-2' }}</strong>
+        </ion-col>
+      </ion-row>
+
+      <!-- Tempo Total -->
+      <ion-row class="info-row" *ngIf="serviceMsgTime">
+        <ion-col size="auto">
+          <ion-icon name="time-outline"></ion-icon>
+          <span class="info-text">Tempo Est.</span>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <strong class="info-value">{{ serviceMsgTime }}</strong>
+        </ion-col>
+      </ion-row>
+
+      <!-- Preço Total -->
+      <ion-row class="info-row" *ngIf="serviceMsgPrice">
+        <ion-col size="auto">
+          <ion-icon name="pricetag-outline"></ion-icon>
+          <span class="info-text">Preço</span>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <strong class="info-value">{{ serviceMsgPrice }}</strong>
+        </ion-col>
+      </ion-row>
+      
+        <ion-row *ngIf="fromPrices" class="action-buttons">
+          <ion-col>
+            <ion-button expand="block" color="danger" (click)="clearAll()">
+              <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+              {{ dataText.getText('clear') }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" color="success" (click)="sendRequest()">
+              <ion-icon slot="start" name="send-outline"></ion-icon>
+              {{ dataText.getText('send') }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      
+    </ion-card-content>
+  </ion-card>      
+
+  <!-- Serviços Disponíveis -->
+  <div class="services-section" *ngIf="availableOrders && availableOrders.length">
+    <h4 class="section-title">{{ dataText.getText('availableServices') }}</h4>
+    <div class="scroll-section">
+      <ion-card *ngFor="let order of availableOrders; let i = index" class="service-card">
+        <ion-card-content>
+          <div class="card-content">
+            <h3 class="card-title">{{ order.dropPoints[0]?.description }}</h3>
+                        
+            <p class="card-text">
+              <strong>{{ dataText.getText('status') }}:</strong>
+              <span style="float: right;">{{ order.status || 'Verificando...' }} </span>
+            </p>
+
+            <p class="card-text" *ngIf="order.driver">
+              <strong>{{ dataText.getText('driver') }}:</strong>
+              <span style="float: right;">{{ order.driver.firstName || 'Verificando...' }} </span>
+            </p>
+
+            <p class="card-text">
+              <strong>{{ dataText.getText('distance') }}:</strong>
+              <span style="float: right;">{{ order.calculatedDistance || 'Calculando...' }} km</span>
+            </p>
+            <p class="card-text">
+              <strong>{{ dataText.getText('estimatedTime') }}:</strong>
+                <span style="float: right;">{{ order.estimatedTime | number:'1.2-2' || 'Calculando...' }} min.</span>
+            </p>
+            <p class="card-text">
+              <strong>{{ dataText.getText('driverEarnings') }}:</strong>
+              <span style="float: right;">R$ {{ order.servicesPrices?.driverEarnings | number:'1.2-2' || 'N/A' }}</span>
+            </p>
+            <p class="card-text">
+              <strong>{{ dataText.getText('totalPoints') }}:</strong>
+              <span style="float: right;">{{ order.dropPoints.length }}</span>
+            </p>
+          </div>
+
+          <!-- Botões de Ação -->
+          <div class="action-buttons">
+            <ion-button fill="solid" class="cancel-button" (click)="confirmCancelOrder(order)" *ngIf="order.status ==='Aguardando'">              
+              {{ dataText.getText('cancel') }}
+            </ion-button>
+            <ion-button fill="clear" class="details-button" (click)="toggleDetails(order)">                
+                  {{ order.detailsButtonText || dataText.getText('viewDetails') }}
+            </ion-button>            
+            <ion-button fill="clear" class="details-button" (click)="openChatbotOrder(order)">              
+              {{ dataText.getText('chat') }}
+            </ion-button>
+          </div>
+
+          <!-- Detalhes Expansíveis -->
+          <div class="order-details" *ngIf="order.showDetails">
+            <p><strong>{{ dataText.getText('createdAt') }}:</strong> {{ order.createdAt | date: 'short' }}</p>
+            <p><strong>{{ dataText.getText('status') }}:</strong> {{ dataText.getText(order.status) }}</p>
+            <h5>{{ dataText.getText('dropPoints') }}:</h5>
+            <ol>
+              <li *ngFor="let point of order.dropPoints">
+                {{ point.description }} - {{ point.status }} 
+              </li>
+            </ol>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+  <!-- FAB Button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!fromPrices">
+    <ion-fab-button color="primary">
+      <ion-icon name="help-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">            
+      <ion-fab-button color="secondary" (click)="openChatbot()">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="tertiary" (click)="showOnboarding()">
+        <ion-icon name="information-circle-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <div id="map" class="map-container"></div>
+
+
+</ion-content>

@@ -1,0 +1,87 @@
+.search-page {
+     
+
+  .hero-image {
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    filter: blur(5px) brightness(0.8);
+  }
+}
+
+.header-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.input-card {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.address-input {
+  font-size: 1rem;
+}
+
+.autocomplete-list {
+  margin-top: 0.5rem;
+}
+
+.autocomplete-item {
+  padding: 0.8rem;
+  font-size: 1rem;
+}
+
+.address-card {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #e9ecef;
+  padding: 1.2rem;
+  border-radius: 8px 8px 0 0;
+}
+
+.address-actions ion-button {
+  margin-right: 0.5rem;
+}
+
+.add-address-btn {
+  margin: 1rem 0;
+}
+
+.address-list {
+  margin-top: 1rem;
+}
+
+
+.button-row {
+  margin-top: 1.5rem;
+  justify-content: center;
+  align-items: center;  
+}
+
+.action-button {  
+  text-align: center;
+  border-radius: 8px;  
+}
+
+ion-reorder {
+  cursor: grab;
+}
+
+
+
+ion-content.search-container {
+  --background: url("../../../assets/images/background.png") no-repeat center center / cover;  
+  overflow-y: auto; 
+  max-height: 100vh;
+}

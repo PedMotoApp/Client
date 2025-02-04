@@ -1,0 +1,120 @@
+.history-page {
+
+
+    
+    .filter-card {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    .order-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem; /* Espaçamento menor entre os cards */
+    }
+  
+    .order-card {
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem;
+      font-size: 0.9rem;
+  
+      ion-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+      }
+  
+      .order-summary {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+  
+      .order-date,
+      .order-distance {
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: #333;
+      }
+  
+      .order-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+  
+      ion-button {
+        padding: 0.4rem; /* Tamanho ajustado dos botões */
+        height: 2.5rem;
+        width: 2.5rem;
+        ion-icon {
+          font-size: 1.4rem;
+        }
+      }
+  
+      ion-card-content {
+        padding: 0.5rem;
+
+        ion-fab {
+          --background: var(--ion-color-primary);
+          --color: white;
+          --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  
+          ion-fab-button {
+            --border-radius: 50%;
+            width: 50px;
+            height: 50px;
+  
+            ion-icon {
+              font-size: 1.4rem;
+            }
+          }
+  
+          ion-fab-list {
+            ion-fab-button {
+              --box-shadow: none;
+  
+              ion-icon {
+                font-size: 1.2rem;
+              }
+  
+              &:hover {
+                --background: var(--ion-color-light);
+                --color: var(--ion-color-primary);
+              }
+            }
+          }
+        }
+  
+        ion-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+  
+          ion-col {
+            flex: 1; /* Divide igualmente */
+            text-align: center; /* Centraliza o texto */
+            p {
+              margin: 0;
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+    }
+
+    
+
+    
+  }
+  
+
+
+ion-content.history-container {
+  --background: url("../../../assets/images/background.png") no-repeat center center / cover;  
+  overflow-y: auto; 
+  max-height: 100vh;
+}

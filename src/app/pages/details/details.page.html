@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ dataText.getText('details') }}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding order-details-page details-container">
+
+  <img src="assets/images/background2.jpg" alt="Background" class="hero-image" *ngIf="! dataService.selectedOrder?.dropPoints?.length" />
+
+
+  <ion-list *ngIf="dataService.selectedOrder?.dropPoints?.length" class="drop-points-list">
+    <ion-item-divider>
+      {{ dataText.getText('dropPoints') }}
+    </ion-item-divider>
+    <ion-card *ngFor="let point of dataService.selectedOrder.dropPoints; let i = index" class="drop-point-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon
+            name="location-outline"
+            [color]="point.startPoint ? 'primary' : (point.isReturn ? 'success' : 'tertiary')"
+          ></ion-icon>
+          {{ point.description }}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p style="text-align: right;"><strong>{{ dataText.getText('status') }}:</strong> {{ point.status || dataText.getText('pending') }}</p>
+
+        <p *ngIf="point.reference" style="text-align: right;"><strong>{{ dataText.getText('reference') }}:</strong> {{ point.reference }}</p>
+        
+        <p *ngIf="point.arrivedAt" style="text-align: right;"><strong>{{ dataText.getText('arrivedAt') }}:</strong> {{ point.arrivedAt | date: 'shortTime' }}</p>
+        <p *ngIf="point.instructions" style="text-align: right;"><strong>{{ dataText.getText('instructions') }}:</strong> {{ point.instructions }}</p>
+        <p *ngIf="point.distanceFromPrevious" style="text-align: right;"><strong>{{ dataText.getText('distance') }}:</strong> {{ point.distanceFromPrevious.toFixed(2) }} km</p>
+
+        <p *ngIf="point.calculatedPrice" style="text-align: right;"><strong>{{ dataText.getText('calculatedPrice') }}:</strong> R$ {{ point.calculatedPrice }}</p>
+        <p *ngIf="point.charge" style="text-align: right;"><strong>{{ dataText.getText('charge') }}:</strong> R$ {{ point.charge }}</p>
+        <p *ngIf="point.finalPassword" style="text-align: right;"><strong>{{ dataText.getText('finalPassword') }}:</strong> {{ point.finalPassword }}</p>
+        <p *ngIf="point.payment" style="text-align: right;"><strong>{{ dataText.getText('payment') }}:</strong> {{ point.payment }}</p>
+        
+        <p *ngIf="point.responsible" style="text-align: right;"><strong>{{ dataText.getText('responsible') }}:</strong> {{ point.responsible }}</p>
+        <p *ngIf="point.totalDistance" style="text-align: right;"><strong>{{ dataText.getText('totalDistance') }}:</strong> {{ point.totalDistance }} Km</p>
+        <p *ngIf="point.totalTime" style="text-align: right;"><strong>{{ dataText.getText('totalTime') }}:</strong> {{ point.totalTime }} min</p>
+
+      </ion-card-content>
+
+      <!-- Botões de ação no ponto atual -->
+      <ion-footer *ngIf="i === currentPointIndex">
+        <ion-row *ngIf="dataService.appUserType === 2">
+          <ion-col>
+            <ion-button expand="block" color="primary" [disabled]="point.status !== 'Aguardando'" (click)="markAsArrived(point)">
+              {{ dataText.getText('arrived') }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" color="success" [disabled]="point.status !== 'Cheguei'" (click)="markAsCompleted(point)">
+              {{ dataText.getText('completeOrder') }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block" color="danger" (click)="cancelOrder(point)">
+              {{ dataText.getText('cancelOrder') }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-footer>
+    </ion-card>
+  </ion-list>
+</ion-content>

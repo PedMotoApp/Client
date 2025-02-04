@@ -1,0 +1,96 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MessageService {
+  
+  private messages: string[] = [
+    'O Senhor é meu pastor. (Salmos 23:1)',
+    'Tudo posso naquele que me fortalece. (Filipenses 4:13)',
+    'Alegrem-se no Senhor. (Filipenses 4:4)',
+    'O Senhor é bom, um refúgio. (Naum 1:7)',
+    'Confie no Senhor de todo o coração. (Provérbios 3:5)',
+    'O Senhor é minha força e meu cântico. (Êxodo 15:2)',
+    'A paz que excede todo entendimento. (Filipenses 4:7)',
+    'Seja forte e corajoso. (Josué 1:9)',
+    'O Senhor está perto. (Salmos 34:18)',
+    'O amor nunca falha. (1 Coríntios 13:8)',
+    'Deus é o nosso refúgio e fortaleza. (Salmos 46:1)',
+    'O justo viverá pela fé. (Romanos 1:17)',
+    'Não temas, porque eu sou contigo. (Isaías 41:10)',
+    'O Senhor luta por vós. (Êxodo 14:14)',
+    'Guardei a tua palavra no meu coração. (Salmos 119:11)',
+    'O Senhor é a minha luz. (Salmos 27:1)',
+    'Deleita-te no Senhor. (Salmos 37:4)',
+    'Clame a mim e eu responderei. (Jeremias 33:3)',
+    'A tua palavra é lâmpada para os meus pés. (Salmos 119:105)',
+    'Entrega o teu caminho ao Senhor. (Salmos 37:5)',
+    'Em tudo dai graças. (1 Tessalonicenses 5:18)',
+    'Andemos na luz do Senhor. (Isaías 2:5)',
+    'O Senhor sustentará a sua vida. (Salmos 55:22)',
+    'O Senhor é o meu rochedo. (Salmos 18:2)',
+    'A alegria do Senhor é a nossa força. (Neemias 8:10)',
+    'O Senhor te guardará de todo o mal. (Salmos 121:7)',
+    'Buscai ao Senhor enquanto se pode achar. (Isaías 55:6)',
+    'Sede santos, porque eu sou santo. (1 Pedro 1:16)',
+    'O Senhor te guiará continuamente. (Isaías 58:11)',
+    'O Senhor reina para sempre. (Salmos 146:10)',
+    'Deus é amor. (1 João 4:8)',
+    'O Senhor ouvirá quando eu clamar. (Salmos 4:3)',
+    'Perto está o Senhor dos que têm coração quebrantado. (Salmos 34:18)',
+    'Amarás o teu próximo como a ti mesmo. (Mateus 22:39)',
+    'O Senhor é a minha salvação. (Salmos 27:1)',
+    'Sede fortes e revigorem-se todos os que esperam no Senhor. (Salmos 31:24)',
+    'Tudo o que fizerdes, fazei-o para a glória de Deus. (1 Coríntios 10:31)',
+    'A tua graça me basta. (2 Coríntios 12:9)',
+    'Aquele que começou a boa obra em vós há de completá-la. (Filipenses 1:6)',
+    'O Senhor é misericordioso e compassivo. (Salmos 103:8)',
+    'Deus não é homem para que minta. (Números 23:19)',
+    'Bem-aventurados os que têm fome e sede de justiça. (Mateus 5:6)',
+    'Não se turbe o vosso coração. (João 14:1)',
+    'Deus é fiel. (1 Coríntios 1:9)',
+    'Sede imitadores de Deus, como filhos amados. (Efésios 5:1)',
+    'Eis que faço novas todas as coisas. (Apocalipse 21:5)',
+    'O Senhor é meu ajudador. (Salmos 118:7)',
+    'Pois eu sei os planos que tenho para vocês. (Jeremias 29:11)',
+    'O Senhor é bom e a sua misericórdia dura para sempre. (Salmos 100:5)',
+    'Bem-aventurados os que choram, porque serão consolados. (Mateus 5:4)',
+    'Eis que estou convosco todos os dias. (Mateus 28:20)',
+    'Se confessarmos os nossos pecados, ele é fiel e justo para nos perdoar. (1 João 1:9)',
+    'Deus é poderoso para fazer infinitamente mais. (Efésios 3:20)',
+    'Os que confiam no Senhor são como o monte Sião. (Salmos 125:1)',
+    'Deus é a nossa fortaleza. (Salmos 46:1)',
+    'Bem-aventurados os pacificadores. (Mateus 5:9)',
+    'O Senhor é a minha rocha e a minha fortaleza. (2 Samuel 22:2)',
+    'Sede vigilantes, permanecei firmes na fé. (1 Coríntios 16:13)',
+    'Mas buscai primeiro o Reino de Deus. (Mateus 6:33)',
+    'Os céus declaram a glória de Deus. (Salmos 19:1)',
+    'Nenhuma arma forjada contra ti prosperará. (Isaías 54:17)',
+    'Deus é o meu alto refúgio. (Salmos 59:16)',
+    'E tudo o que pedirdes em oração, crendo, recebereis. (Mateus 21:22)',
+    'Ainda que a figueira não floresça, eu me alegrarei no Senhor. (Habacuque 3:17-18)',
+    'O Senhor abençoará o seu povo com paz. (Salmos 29:11)',
+    'Eu sou o caminho, a verdade e a vida. (João 14:6)',
+    'Não por força nem por poder, mas pelo meu Espírito. (Zacarias 4:6)',
+    'O Senhor está comigo; não temerei. (Salmos 118:6)',
+    'O Senhor é a minha fortaleza e a minha força. (2 Samuel 22:33)',
+    'Pois a sua ira dura apenas um momento, mas o seu favor dura a vida toda. (Salmos 30:5)',
+    'Bendize, ó minha alma, ao Senhor. (Salmos 103:1)',
+    'Deus é bom em todo o tempo. (Salmos 145:9)',
+    'Sede fortes e corajosos. (Deuteronômio 31:6)',
+    'Vinde a mim, todos os que estão cansados. (Mateus 11:28)',
+    'O Senhor é justo e ama a justiça. (Salmos 11:7)',
+    'Deus é a nossa força e escudo. (Salmos 28:7)',
+    'A salvação pertence ao Senhor. (Jonas 2:9)',
+    'Não vos conformeis com este mundo, mas transformai-vos. (Romanos 12:2)',
+    'Aquele que habita no esconderijo do Altíssimo descansará à sombra do Onipotente. (Salmos 91:1)'
+  ];
+  
+  constructor() { }
+
+  getRandomMessage(): string {
+    const randomIndex = Math.floor(Math.random() * this.messages.length);
+    return this.messages[randomIndex];
+  }
+}

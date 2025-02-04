@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{ dataText.getText('uploadDocuments') }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="explanation-card">
+    <ion-card-content>
+      <p>
+        <strong>{{ dataText.getText('documentDetails') }}</strong><br />
+        {{ dataText.getText('moreDocumentsBetter') }}
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item *ngFor="let document of documents; let i = index">
+      <ion-label>
+        <h2>{{ document.name }}</h2>
+        <p *ngIf="document.uploadedUrl" class="uploaded-url">
+          <a [href]="document.uploadedUrl" target="_blank">{{ dataText.getText('viewUploaded') }}</a>
+        </p>
+      </ion-label>
+      <ion-badge *ngIf="document.uploaded" color="success">Enviado</ion-badge>
+      <ion-badge *ngIf="!document.uploaded" color="danger">Pendente</ion-badge>
+      <ion-button
+        fill="outline"
+        slot="end"
+        [disabled]="document.uploaded"
+        (click)="triggerFileInput(i, document)"
+      >
+        {{ document.uploaded ? dataText.getText('contactSupport') : dataText.getText('upload') }}
+      </ion-button>
+      <input
+        type="file"
+        accept="image/png, image/jpeg, application/pdf"
+        #fileInput
+        (change)="uploadDocument($event, document)"
+        hidden
+      />
+    </ion-item>
+  </ion-list>
+</ion-content>

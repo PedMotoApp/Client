@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Bem-vindo ao Motok!</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="onboarding-container">
+  <ion-slides pager="true" class="onboarding-slides">
+    <ion-slide *ngFor="let item of data; let isLast = last" class="onboarding-slide">
+      <img class="slide-background" [src]="item.image" />
+      <div class="slide-overlay">
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.description }}</p>
+      </div>
+      <div *ngIf="isLast" class="close-button-container">
+        <ion-button
+          class="action-button"
+          expand="block"
+          fill="solid"
+          color="primary"
+          (click)="closeOnboarding()"
+        >
+          Começar
+        </ion-button>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

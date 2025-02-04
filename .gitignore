@@ -1,0 +1,7 @@
+node_modules
+platforms/
+plugins/
+www/
+.firebase/hosting.d3d3.cache
+platforms/
+platforms/ios/

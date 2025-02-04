@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ dataText.getText('userProfile') }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openDocumentModal()">
+        <ion-icon slot="icon-only" name="document-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding user-profile-page user-container">
+
+  <div class="profile-header">
+    <div class="profile-picture">
+      <img
+        [src]="userInfoForm.value.photo || 'assets/images/logo.png'"
+        alt="Profile Photo"
+      />
+      <input
+        type="file"
+        accept="image/png, image/jpeg"
+        #fileInput
+        (change)="onFileSelected($event)"
+        hidden
+      />
+    </div>
+    <div class="profile-info">
+      <h2>{{ userInfoForm.value.firstName || 'Nome do Usuário' }}</h2>
+      <div class="ranking-summary">
+        <p><ion-icon name="medal-outline"></ion-icon> Ranking: {{ userStats.ranking || 'N/A' }}</p>
+        <p><ion-icon name="checkmark-circle-outline"></ion-icon> Serviços: {{ userStats.totalServices || 0 }}</p>
+        <p><ion-icon name="cash-outline"></ion-icon> Ganhos: {{ userStats.totalEarnings | currency }}</p>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="userInfoForm" (ngSubmit)="saveProfile()" class="profile-form">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Nome</ion-label>
+        <ion-input formControlName="firstName"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Sobrenome</ion-label>
+        <ion-input formControlName="lastName"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Instagram</ion-label>
+        <ion-input formControlName="instagram"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Telefone</ion-label>
+        <ion-input formControlName="phone" type="tel"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">CPF</ion-label>
+        <ion-input formControlName="cpf"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">CNPJ</ion-label>
+        <ion-input formControlName="cnpj"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Chave Pix</ion-label>
+        <ion-input formControlName="pixKey"></ion-input>
+      </ion-item>
+      <div class="pix-info">
+        <ion-text color="danger" class="warning-text">
+          A chave Pix deve estar vinculada ao CPF ou nome cadastrados neste perfil.
+        </ion-text>
+      </div>
+    </ion-list>
+
+    <div class="action-buttons">
+      <ion-button expand="block" type="submit" [disabled]="userInfoForm.invalid" color="primary">
+        Salvar
+      </ion-button>
+      <ion-button expand="block" color="danger" (click)="confirmDeleteAccount()">
+        Remover Conta
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

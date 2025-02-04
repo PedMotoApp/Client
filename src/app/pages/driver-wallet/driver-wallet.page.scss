@@ -1,0 +1,131 @@
+.wallet-content {
+    position: relative;
+  }
+  
+  .hero-image {
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    filter: blur(5px) brightness(0.8);
+  }
+  
+  .balance-card {
+    ion-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    .balance-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+  
+      ion-card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--ion-color-primary);
+      }
+  
+      .balance-text {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--ion-color-primary);
+        text-align: right;
+      }
+    }
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+  
+    ion-button {
+      flex: 1;
+      margin: 0 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
+  
+  .explanation-card {
+    margin-top: 1rem;
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+  }
+
+  .withdrawal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .history-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .history-card ion-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+  }
+
+  .history-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .stats-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+
+    .stats-card {
+      background: var(--ion-color-primary);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 1rem;
+      flex: 1 0 calc(45% - 1rem);
+
+
+      ion-icon {
+        font-size: 2rem;
+      }
+
+      p {
+        margin: 0.5rem 0;
+      }
+
+      h4 {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+
+
+
+
+ion-content.wallet-container {
+  --background: url("../../../assets/images/background.png") no-repeat center center / cover;  
+  overflow-y: auto; 
+  max-height: 100vh;
+}

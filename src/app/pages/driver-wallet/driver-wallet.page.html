@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/driver"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ dataText.getText('wallet') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding wallet-content wallet-container">
+  <!-- Fundo com imagem -->
+
+  <!-- Card do Saldo Atual -->
+  <ion-card class="balance-card">
+    <ion-card-header>
+      <div class="balance-row">
+        <ion-card-title>{{ dataText.getText('walletBalance') }}</ion-card-title>
+        <h2 class="balance-text">R$ {{ currentBalance | number: '1.2-2' }}</h2>
+      </div>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- Botões de Ação -->
+  <ion-row>
+    
+    <ion-col>
+      <ion-button
+        expand="block"
+        color="success"
+        shape="round"
+        (click)="confirmWithdrawal()"
+      >
+        {{ dataText.getText('requestWithdrawal') }}
+      </ion-button>
+    </ion-col>
+
+
+    <ion-col>
+
+      <ion-button
+          expand="block"
+          color="primary"
+          shape="round"
+          (click)="buyToken()"
+        >
+          {{ dataText.getText('buyToken') }}
+        </ion-button>
+
+    </ion-col>
+    
+
+  </ion-row>
+
+  <!-- Explicação -->
+  <ion-card class="explanation-card">
+    <ion-card-content>
+      <p>
+        <strong>{{ dataText.getText('withdrawalRules') }}</strong><br />
+        Você pode sacar <strong>97% do saldo atual</strong> por operação. O sistema utilizará automaticamente <strong>3%</strong> para comprar e fazer auto-staking do token <strong>$MOTOK</strong>.
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Histórico de Retiradas -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ dataText.getText('withdrawalHistory') }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list class="withdrawal-list">
+        <ion-card *ngFor="let history of withdrawalHistory" class="history-card">
+          <ion-card-header>
+            <div class="history-header">              
+              <ion-card-title>
+                📅  {{ history.date | date: 'shortDate' }} - {{ dataText.getText(history.status) }}
+              </ion-card-title>
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            <p>
+              <strong>{{ dataText.getText('amount') }}:</strong> R$ {{ history.amount | number: '1.2-2' }}
+            </p>
+            <p>
+              <strong>{{ dataText.getText('status') }}:</strong> {{ dataText.getText(history.status) }}
+            </p>
+          </ion-card-content>
+        </ion-card>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,305 @@
+/* Geral: Reduzindo ainda mais o padding lateral */
+body,
+ion-content {
+  padding: 0 0.5rem; /* Padding lateral reduzido */
+}
+
+/* Ajuste do mapa para deixar espaço entre o mapa e o bottom */
+.map-container {
+  width: 100%;
+  height: calc(100vh - 320px); /* Reduzida a altura para criar um pequeno espaço */
+  margin-top: 1rem;
+  border-radius: 8px; /* Mantendo bordas arredondadas */
+  overflow: hidden; /* Garantir que nada vaze fora dos limites */
+  margin-bottom: 1rem; /* Espaço entre o fim do mapa e outros elementos */
+}
+
+/* Estilização para melhorar o layout */
+.route-info {
+  padding: 0.8rem;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.4rem;
+}
+
+/* Ajustes de entradas e botões */
+.to.disabled {
+  ion-input {
+    font-size: 14px;
+    padding: 6px 0;
+  }
+
+  ion-button {
+    margin-left: auto; /* Alinhar botão à direita */
+    ion-icon {
+      font-size: 20px;
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+/* Lista de autocompletar */
+ion-list {
+  padding: 0;
+  ion-item {
+    font-size: 14px;
+
+    ion-icon {
+      font-size: 18px;
+      margin-right: 6px;
+      color: var(--ion-color-primary);
+    }
+
+    ion-label {
+      font-size: 14px;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+  }
+}
+
+/* Background hero image */
+.hero-image {
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  filter: blur(5px) brightness(0.9);
+}
+
+/* Utilitário de alinhamento flex */
+.align-items-flex-end {
+  display: flex;
+  align-items: flex-end;
+}
+
+.home-container {
+  padding: 0.5rem;
+}
+
+.autocomplete-item {
+  margin-bottom: 1rem;
+}
+
+.autocomplete-list {
+  margin-top: -10px;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.autocomplete-list ion-item {
+  --background: #f8f8f8;
+  --ion-color-primary: #3880ff;
+}
+
+.map-container {
+  margin-top: 1rem;
+  height: 40vh;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resume-container {
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin: 1rem;  
+
+  .info-row {
+    
+    margin-bottom: 0.8rem; /* Espaço entre as linhas */
+    font-size: 1rem;
+
+    ion-icon {
+      margin-right: 0.8rem; /* Espaçamento entre ícone e texto */
+      font-size: 1.2rem;
+      color: var(--ion-color-primary); /* Cor do ícone */
+    }
+
+    .info-text {
+      font-weight: normal;
+      color: #000; /* Cor preta para o texto */
+      flex: 1; /* Ocupa o espaço disponível */
+      text-align: left; /* Alinha o texto à esquerda */
+    }
+
+    .info-value {
+      font-weight: bold;
+      color: var(--ion-color-primary); /* Cor padrão para valores */
+      text-align: right;
+
+      &.green-text {
+        color: var(--ion-color-success); /* Cor verde para saldo */
+      }
+    }
+  }
+}
+
+
+
+.prices-container {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.explanation-card {
+  margin-top: 1rem;
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 1rem;
+}
+
+.balance-card {  
+  background-color: #e3f2fd;
+  border-left: 4px solid #18bc62;  
+}
+
+.action-buttons {
+  margin-top: 1rem;
+  display: flex; 
+  justify-content: flex-end;
+}
+
+.services-section {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 1rem;
+  margin-top: 1rem;
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: bold;
+    
+  }
+
+  .scroll-section {
+    // display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* Espaço entre os cards */
+
+    .service-card {
+      margin: 0;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-top: 5px;
+
+      .order-details {
+        margin-top: 1rem;
+        padding: 0.5rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    
+        p, li {
+          font-size: 0.9rem;
+          color: #333;
+        }
+    
+        h5 {
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+          color: var(--ion-color-primary);
+        }
+      }
+    
+      .details-button ion-icon {
+        margin-right: 0.5rem;
+        color: var(--ion-color-primary);
+      }
+    
+      .cancel-button {
+        --background: var(--ion-color-danger);
+        --color: white;
+      }
+
+      ion-card-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0.5rem;
+      }
+
+      .card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        h3.card-title {
+          margin: 0.5rem 0;
+          font-size: 1rem;
+          font-weight: 500;
+          text-align: justify;
+        }
+
+        p.card-text {
+          margin: 0.3rem 0;
+          font-size: 0.9rem;
+          color: #555;
+          text-align: justify;
+
+          strong {
+            display: inline-block;
+            margin-right: 0.3rem;
+          }
+        }
+      }
+
+      .details-button {
+        align-self: flex-end;
+        margin-top: 0.5rem;
+        --background: var(--ion-color-primary);
+        --color: white;
+        font-size: 0.8rem;
+        height: 30px;
+        padding: 0 10px;
+
+        ion-icon {
+          font-size: 1rem;
+          margin-right: 0.2rem;
+        }
+      }
+
+      .cancel-button {
+        align-self: flex-end;
+        --background: var(--ion-color-danger);
+        --color: white;
+        font-size: 0.8rem;
+        height: 30px;
+        padding: 0 10px;
+
+        ion-icon {
+          font-size: 1rem;
+          margin-right: 0.2rem;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+ion-content.home-container {
+  --background: url("../../../assets/images/background.png") no-repeat center center / cover;  
+  overflow-y: auto; 
+  max-height: 100vh;
+}

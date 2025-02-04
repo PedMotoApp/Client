@@ -1,0 +1,8 @@
+{
+  "name": "motok",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

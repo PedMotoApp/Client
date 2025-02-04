@@ -1,0 +1,76 @@
+.prices-page {
+  position: relative;
+  margin: 0; /* Remove margens extras */
+  padding: 0; /* Remove preenchimentos extras */
+
+  .background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url('../../../assets/images/background.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px) brightness(0.8);
+    z-index: -1; /* Para que o fundo fique atrás do conteúdo */
+  }
+
+  .hero-image {
+    display: none; /* Remova a imagem duplicada */
+  }
+
+
+  
+  .header-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .prices-container {
+
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .explanation-card {
+    margin-top: 1rem;
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+  }
+}
+
+.footer-buttons {
+  margin: 0; /* Remove margens extras */
+  padding: 0; /* Remove preenchimentos extras */
+  height: auto; /* Garante que o footer ocupe somente o necessário */
+  background: transparent; /* Fundo transparente para o overlay */
+  position: relative;
+  z-index: 1;
+
+}
+
+ion-content,
+ion-footer {
+  --padding-bottom: 0; /* Remove preenchimento extra */
+  --margin-bottom: 0; /* Remove margem extra */
+}
+
+
+
+
+
+ion-content.prices-container {
+  --background: url("../../../assets/images/background.png") no-repeat center center / cover;  
+  overflow-y: auto; 
+  max-height: 100vh;
+}

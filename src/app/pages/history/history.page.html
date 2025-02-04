@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ dataText.getText('orderHistory') }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="exportToExcel()">
+        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="exportToPDF()">
+        <ion-icon slot="icon-only" name="document-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding  history-page history-container">
+  <!-- Existing content -->
+  <ion-list>
+    <ion-card>
+      <ion-item>
+        <ion-label>{{ dataText.getText('startDate') }}</ion-label>
+        <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="filter.startDate"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ dataText.getText('endDate') }}</ion-label>
+        <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="filter.endDate"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ dataText.getText('status') }}</ion-label>
+        <ion-select [(ngModel)]="filter.status">
+          <ion-select-option value="">{{ dataText.getText('all') }}</ion-select-option>
+          <ion-select-option value="Finalizado">{{ dataText.getText('completed') }}</ion-select-option>
+          <ion-select-option value="Cancelado">{{ dataText.getText('canceled') }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button expand="block" color="primary" (click)="applyFilters()">
+        {{ dataText.getText('filter') }}
+      </ion-button>
+    </ion-card>
+
+    <ion-card *ngFor="let order of filteredOrders" class="order-card">
+      <ion-card-header>
+        <ion-card-title>
+          📅 {{ order.createdAt | date: 'shortDate' }} {{ order.createdAt | date: 'shortTime' }} - {{ order.status }}
+        </ion-card-title>
+        <ion-note>
+          <strong>{{ dataText.getText('totalDistance') }}</strong> {{ order.aggregated.totalDistance }} km
+        </ion-note>
+        <ion-note>
+          <strong>{{ dataText.getText('totalTime') }}</strong> {{ order.aggregated.totalTime }} mins
+        </ion-note>
+      </ion-card-header>
+      <ion-card-content>
+
+
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <p *ngIf="dataService.appUserType === 1">
+                <strong>Profissional:</strong> {{ order.driver.firstName }}
+              </p>
+              <p *ngIf="dataService.appUserType === 2">
+                <strong>Cliente:</strong> {{ order.user.firstName }}
+              </p>
+              <p *ngIf="dataService.appUserType === 1">
+                <strong>Valor pago:</strong> R$ {{ order.servicesPrices.totalPrice }}
+              </p>
+              <p *ngIf="dataService.appUserType === 2">
+                <strong>Valor recebido:</strong> R$ {{ order.servicesPrices.driverEarnings.toFixed(2) }}
+              </p>
+              <p *ngIf="dataService.appUserType === 1 && order.rating">
+                <strong>Avaliação cliente:</strong> {{ order.rating }} estrelas
+              </p>
+              <p *ngIf="dataService.appUserType === 1 && order.comment">
+                <strong>Comentário cliente:</strong> {{ order.comment }}
+              </p>
+              <p *ngIf="dataService.appUserType === 2 && order.driverRating">
+                <strong>Avaliação profissional:</strong> {{ order.driverRating }} estrelas
+              </p>
+              <p *ngIf="dataService.appUserType === 2 && order.driverComment">
+                <strong>Comentário profissional:</strong> {{ order.driverComment }}
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-item *ngFor="let point of order.dropPoints">
+            <ion-label>
+              <h2>{{ point.description }}</h2>
+              <p>
+                <strong>{{ dataText.getText('distance') }}:</strong>
+                <span style="white-space: pre-line;">{{ point.distanceFromPrevious?.toFixed(2) || 'N/A' }} km</span>
+              </p>
+              <p>
+                <strong>{{ dataText.getText('time') }}:</strong> {{ point.timeFromPrevious ? (point.timeFromPrevious * 60).toFixed(0) : 'N/A' }} mins
+              </p>
+              <p>
+                <strong>{{ dataText.getText('status') }}:</strong> {{ dataText.getText(point.status) }}
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <!-- FAB Button -->
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button color="primary">
+            <ion-icon name="trophy"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-list side="top">
+            <ion-fab-button color="success" (click)="openRatingModal(order)">
+              <ion-icon name="star-outline"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="danger" (click)="openComplaintModal(order)">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="secondary" (click)="openChatbot(order)">
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+            </ion-fab-button>
+          </ion-fab-list>
+        </ion-fab>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

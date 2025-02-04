@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="start">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/login"></ion-back-button>
+      </ion-buttons>
+    </ion-buttons>
+    
+    <ion-title>{{ dataInfo.appName }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding light-background">
+  <img src="assets/images/logo.png" class="logo">
+
+  <form [formGroup]="signupForm" (ngSubmit)="signupUser()">
+    <ion-list>
+
+      <ion-item class="input-item">
+        <ion-input type="text" placeholder="{{ dataText.getText('titleName') }}" formControlName="fullname"></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-input type="number" placeholder="{{ dataText.getText('titleYourPhonePlaceHolder') }}" formControlName="tel"></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-input type="email" placeholder="{{ dataText.getText('titleEmail') }}" formControlName="email"></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-input type="password" placeholder="{{ dataText.getText('titleYourPasswordPlaceHolder') }}" formControlName="password"></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-input type="password" placeholder="{{ dataText.getText('titleYourPasswordConfirmPlaceHolder') }}" formControlName="password1"></ion-input>
+      </ion-item>
+
+      <ion-note color="danger" *ngIf="signupForm.controls.password.value !== signupForm.controls.password1.value">
+        {{ dataText.getText('passwordNotMatch') }}
+      </ion-note>    
+
+      <ion-button expand="block" type="submit" [disabled]="signupForm.invalid" color="primary">
+        {{ dataInfo.appUserType === 1 ? dataText.getText('addClient') : dataText.getText('addProfessional') }}
+      </ion-button>
+      
+    </ion-list>
+  </form>
+
+  <ion-footer>
+    <ion-row text-center>
+      <ion-col (click)="goTerms()"><small><strong>{{ dataText.getText('termsUse') }}</strong></small></ion-col>
+    </ion-row>
+    <ion-row text-center>
+      <ion-col (click)="goPriv()"><small><strong>{{ dataText.getText('privacy') }}</strong></small></ion-col>
+    </ion-row>
+  </ion-footer>
+</ion-content>

@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" defaultHref="/history"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ dataText.getText('rating') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="user-profile-page">
+  <!-- Background -->
+  <img src="assets/images/background.png" alt="Background" class="hero-image" />
+
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="profile-picture">
+      <img
+        [src]="dataService.userInfo.photo || 'assets/images/logo.png'"
+        alt="Profile Photo"
+      />
+    </div>
+    <div class="profile-info" *ngIf="dataService.appUserType === 2">
+      <h2>{{ order.user.firstName || 'N/A' }}</h2>
+      <div class="ranking-summary compact">
+        <p><ion-icon name="medal-outline"></ion-icon> {{ dataText.getText('ranking') }}: {{ order.user.stats.ranking || 'N/A' }}</p>
+      </div>
+    </div>
+
+    <div class="profile-info" *ngIf="dataService.appUserType === 1">
+      <h2>{{ order.driver.firstName || 'N/A' }}</h2>
+      <div class="ranking-summary compact">
+        <p><ion-icon name="medal-outline"></ion-icon> {{ dataText.getText('ranking') }}: {{ order.driver.stats.ranking || 'N/A' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <ion-card class="prices-container explanation-card">
+    <ion-card-content>
+      <p>
+        <strong>{{ currentMessage }}</strong><br />
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Rating Slider -->
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">{{ dataText.getText('selectRating') }}</ion-label>
+      <div class="rating-buttons">
+        <ion-button *ngFor="let star of stars; let i = index" 
+                    fill="clear" 
+                    [color]="rating > i ? 'warning' : 'medium'" 
+                    (click)="setRating(i + 1)">
+          <ion-icon name="star"></ion-icon>
+        </ion-button>
+      </div>
+      <div style="margin-top: 10px;"></div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">{{ dataText.getText('addComment') }}</ion-label>
+      <ion-textarea [(ngModel)]="comment"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <div class="action-buttons">
+    <ion-button expand="block" color="primary" (click)="confirmRating()">
+      {{ dataText.getText('saveRating') }}
+    </ion-button>
+  </div>
+</ion-content>

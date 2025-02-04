@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "586536055929",
+    "firebase_url": "https://motok-7d13a-default-rtdb.firebaseio.com",
+    "project_id": "motok-7d13a",
+    "storage_bucket": "motok-7d13a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586536055929:android:244fa3e80313f81efb10a8",
+        "android_client_info": {
+          "package_name": "com.motokapp.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586536055929-dsrgdhbjhf5ocd1dl55b48voqbuf39ip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiuE1YMRwHCBLwNL7cnZzfhJjf-Uhxih4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586536055929-dsrgdhbjhf5ocd1dl55b48voqbuf39ip.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586536055929:android:bdc0211b1d038043fb10a8",
+        "android_client_info": {
+          "package_name": "com.motokapp.pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586536055929-dsrgdhbjhf5ocd1dl55b48voqbuf39ip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiuE1YMRwHCBLwNL7cnZzfhJjf-Uhxih4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586536055929-dsrgdhbjhf5ocd1dl55b48voqbuf39ip.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

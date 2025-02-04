@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar  color="primary">
+    <ion-buttons slot="start">      
+      <ion-button (click)="goToProfile()">
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="goToHistory()">
+        <ion-icon name="time-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ dataText.getText('driverDashboard') }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding explore-container driver-container">      
+    
+    <!-- Overview Section -->
+    <div class="stats-section">      
+      <!-- Serviços Disponíveis -->
+      <div class="stats-card"  (click)="goToHistory()">
+        <ion-icon name="list-outline"></ion-icon>
+        <p>{{ dataText.getText('availableServices') }}</p>
+        <h4>{{ availableOrders?.length || 0 }}</h4>
+      </div>
+    
+      <!-- Serviços Concluídos -->
+      <div class="stats-card"  (click)="goToHistory()">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <p>{{ dataText.getText('servicesCompleted') }}</p>
+        <h4>{{ overview?.totalServices || 0 }}</h4>
+      </div>
+    
+      <!-- Ganhos do Dia -->
+      <div class="stats-card" (click)="goToWallets()">
+        <ion-icon name="today-outline"></ion-icon>
+        <p>{{ dataText.getText('earningsToday') }}</p>
+        <h4>{{ overview?.dailyEarnings | currency:'BRL' }}</h4>
+      </div>
+    
+      <!-- Ganhos do Mês -->
+      <div class="stats-card" (click)="goToWallets()">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <p>{{ dataText.getText('earningsThisMonth') }}</p>
+        <h4>{{ overview?.monthlyEarnings | currency:'BRL' }}</h4>
+      </div>
+    </div>    
+
+   <ion-card class="prices-container explanation-card" *ngIf="msgInfoVisible">
+    <ion-card-content>
+      <p>
+        <strong>{{ currentMessage }}</strong><br />        
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+    <h2  *ngIf="!availableOrders.length" style="text-align: center; font-size: 24px; font-weight: bold; position: relative; z-index: 2; color: #fff; background: rgba(0, 0, 0, 0.6); padding: 10px; border-radius: 8px;">Recomendações</h2>
+
+    <div *ngIf="!availableOrders.length" class="recommendations-section" style="margin-top: 20px; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 10px; position: relative; z-index: 2;">
+      <div *ngFor="let recommendation of recommendations" class="recommendation-card" style="flex: 0 0 300px; background: #333; border-radius: 10px; box-shadow: 0px 2px 5px rgba(0,0,0,0.2); color: white;">
+        <img [src]="recommendation.image" [alt]="recommendation.title" class="recommendation-image" style="width: 100%; height: 330px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+        <div class="recommendation-info" style="padding: 10px;">
+          <h3 style="color: white;">{{recommendation.title}}</h3>
+          <p style="color: #ccc;">{{recommendation.description}}</p>
+          <button class="recommendation-button" (click)="viewRecommendation(recommendation)" style="background-color: #007acc; color: #fff; border: none; border-radius: 5px; padding: 8px 16px; cursor: pointer;">Saiba Mais</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services Section -->    
+    <div class="services-section" *ngIf="availableOrders.length">
+      <h4 class="section-title">{{ dataText.getText('availableServices') }}</h4>
+      <div class="scroll-section">
+        <ion-card *ngFor="let order of availableOrders; let i = index" class="service-card">
+          <ion-card-content>
+            <div class="card-content">
+              <h3 class="card-title">{{ order.dropPoints[0]?.description }}</h3>
+              <p class="card-text">
+                <strong>{{ dataText.getText('distance') }}:</strong>
+                <span style="float: right;">{{ order.collectionDistance || 'Calculando...' }}</span>
+              </p>
+              <p class="card-text">
+                <strong>{{ dataText.getText('estimatedTime') }}:</strong>
+                <span style="float: right;">{{ order.collectionTime || 'Calculando...' }}</span>
+              </p>
+              <p class="card-text">
+                <strong>{{ dataText.getText('driverEarnings') }}:</strong>
+                <span style="float: right;">R$ {{ order.servicesPrices?.driverEarnings | number:'1.2-2' || 'N/A' }}</span>
+              </p>
+              <p class="card-text">
+                <strong>{{ dataText.getText('totalPoints') }}:</strong>
+                <span style="float: right;">{{ order.dropPoints.length }}</span>
+              </p>
+            </div>
+            <div class="action-buttons">
+              <ion-button fill="clear" class="details-button" (click)="viewDetails(order)">
+                <ion-icon slot="start" name="search-outline"></ion-icon>
+                {{ dataText.getText('viewDetails') }}
+              </ion-button>
+              <ion-button fill="solid" class="accept-button" (click)="confirmAcceptOrder(order)">
+                <ion-icon slot="start" name="checkmark-outline"></ion-icon>
+                {{ dataText.getText('accept') }}
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>    
+</ion-content>
