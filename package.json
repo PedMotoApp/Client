@@ -27,7 +27,7 @@
     "@awesome-cordova-plugins/geolocation": "^6.9.0",
     "@awesome-cordova-plugins/in-app-browser": "^5.43.0",
     "@capacitor/android": "^2.5.0",
-    "@capacitor/core": "2.4.6",    
+    "@capacitor/core": "2.4.6",
     "@capacitor/ios": "^2.5.0",
     "@fullcalendar/angular": "^6.1.10",
     "@fullcalendar/bootstrap5": "^6.1.10",

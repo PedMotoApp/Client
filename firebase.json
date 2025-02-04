@@ -1,7 +1,7 @@
 {
   "hosting": {
     "public": "www",
-    "site": "pedmoto",
+    "site": "pedmotoclient",
     "ignore": [
       "firebase.json",
       "**/.*",
