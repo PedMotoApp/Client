@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.dbltecnologia.pedmoto" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>PedMoto</name>
+<widget id="com.dbltecnologia.pedmotomotorista" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PedMoto Motorista</name>
     <description>O seu aplicativo de corridas</description>
-    <author email="admin@dbltecnologia.com.br" href="https://www.pedmoto.com.br">PedMoto</author>
+    <author email="admin@dbltecnologia.com.br" href="https://www.pedmoto.com.br">PedMoto Motorista</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
