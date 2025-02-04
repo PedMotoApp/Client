@@ -120,7 +120,7 @@ export class DriverWalletPage implements OnInit {
   }
 
   buyToken() {
-    window.open('https://token.motokapp.com.br', '_blank'); // Substitua pela URL real de compra do token
+    window.open('https://token.pedmoto.com.br', '_blank'); // Substitua pela URL real de compra do token
   }
 
   async presentToast(message: string, color: string) {

@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>Motok</ion-title>
+    <ion-title>PedMoto</ion-title>
 
     <ion-buttons slot="end">
       <ion-button (click)="dev()" *ngIf="dataService.isDev">
@@ -59,8 +59,8 @@
               type="text"
               formControlName="address"
               placeholder="Digite o destino adicional"
-              (keyup)="onEnter('additionalDestinations_' + i)"
-              (focus)="onEnter('additionalDestinations_' + i)"
+              (keyup)="onDebounce('additionalDestinations_' + i)"
+              (focus)="onDebounce('additionalDestinations_' + i)"
             ></ion-input>
             <ion-button fill="clear" color="danger" slot="end" (click)="removeDestination(i)">
               <ion-icon name="close-circle-outline"></ion-icon>

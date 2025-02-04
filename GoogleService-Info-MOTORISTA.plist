@@ -2,22 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>586536055929-e5kb5d7tav3qo3n2l05foaedl6lss1n0.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.586536055929-e5kb5d7tav3qo3n2l05foaedl6lss1n0</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBbwdH1rBftMlHf4QwqJtfhZI6HDaxRyZc</string>
+	<string>AIzaSyCRLAayGb0T5lGlv9fuP8krADubial7Gfs</string>
 	<key>GCM_SENDER_ID</key>
-	<string>586536055929</string>
+	<string>979953795342</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.dbltecnologia.motokmotoboy</string>
+	<string>com.dbltecnologia.pedmotomotorista</string>
 	<key>PROJECT_ID</key>
-	<string>motok-7d13a</string>
+	<string>pedmoto-b5358</string>
 	<key>STORAGE_BUCKET</key>
-	<string>motok-7d13a.appspot.com</string>
+	<string>pedmoto-b5358.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +25,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:586536055929:ios:92f103bfb6ca81f5fb10a8</string>
+	<string>1:979953795342:ios:2577602a0b33255226575f</string>
 	<key>DATABASE_URL</key>
-	<string>https://motok-7d13a-default-rtdb.firebaseio.com</string>
+	<string>https://pedmoto-b5358-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

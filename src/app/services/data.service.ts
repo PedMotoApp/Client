@@ -12,11 +12,11 @@ export class DataService {
   fireconfig = environment.firebaseConfig;
   
       
-  appTermsConditions = "https://termos.motokapp.com.br";
-  appTermsPriv = "https://privacidade.motokapp.com.br";
+  appTermsConditions = "https://termos.pedmoto.com.br";
+  appTermsPriv = "https://privacidade.pedmoto.com.br";
 
   isHome = false;
-  appName = "Motok";    
+  appName = "Pedmoto";    
   appUserType = 1; // 1 = Client, 2 = Professional  
   isWeb = false;
   defaultState = 'DF';

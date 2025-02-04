@@ -174,7 +174,7 @@ export class LoginPage implements OnInit, OnDestroy {
     }
 
     const email = this.dataInfo.userInfo.email
-    if(email === "cliente@gmail.com" || email === "profissional@gmail.com"){
+    if(email === "cliente@pedmoto.com.br" || email === "profissional@pedmoto.com.br"){
       this.dataInfo.isDev = true
     }
 

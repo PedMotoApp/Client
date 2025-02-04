@@ -5,13 +5,13 @@ import { DataService } from 'src/app/services/data.service';
 import { DataTextService } from 'src/app/services/data-text.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { UiUtilsService } from 'src/app/services/ui-utils.service';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GeolocationService } from 'src/app/services/geolocation.service';
 import { environment } from 'src/environments/environment';
 import { ActionSheetController } from '@ionic/angular';
 import { SuggestionsModalComponent } from '../../components/suggestions-modal/suggestions-modal.component';
-import { ModalController, MenuController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
@@ -20,7 +20,7 @@ import { WalletService } from 'src/app/services/wallet.service';
 import { NotificationService } from  'src/app/services/notification.service';
 import { OnboardingPage } from '../onboarding/onboarding.page';
 import { Storage } from '@ionic/storage';
-
+import { PricingService } from 'src/app/services/pricing.service';
 
 @Component({
   selector: 'app-home',
@@ -68,14 +68,21 @@ export class HomePage implements OnInit, AfterViewInit {
   hasSeenOnboarding: boolean = false;
   showGeneralData: boolean = false
 
+  priceTables: any[] = [];
+  selectedTable: any;
+  calculatedPrice: any = {};
+  dropPoints: any[] = [];
+  totalDistance: number = 0;
+  totalTime: number = 0;
+
+
   constructor(
     private formBuilder: FormBuilder,
     public dataService: DataService,
     public dataText: DataTextService,
     private db: DatabaseService,
     public authService: AuthService,    
-    private alertCtrl: AlertController,
-    private menuController: MenuController,
+    private alertCtrl: AlertController,    
     private walletService: WalletService,
     private uiUtils: UiUtilsService,
     private loadingCtrl: LoadingController,
@@ -85,11 +92,11 @@ export class HomePage implements OnInit, AfterViewInit {
     private geolocationService: GeolocationService,
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
-    private statsService: StatsService,
-    private toastCtrl: ToastController,
+    private statsService: StatsService,    
     private messageService: MessageService,
     public notificationService: NotificationService,
     public storage: Storage,
+    private priceService: PricingService,
   ) {}
 
   async ngOnInit() {
@@ -101,7 +108,9 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit() {
+
     this.hasSeenOnboarding = (await this.storage.get('hasSeenOnboarding')) || false;
+
     console.log('Já viu o onboarding?', this.hasSeenOnboarding);
     await this.loadGoogleMapsApi()
 
@@ -205,20 +214,12 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   async startInterface() {
-
-    
-    //await this.initializeMap();
-    await this.startNotifications();
-
-    // Agora que tudo carregou, podemos exibir o onboarding
-    if (!this.hasSeenOnboarding) {
-      await this.showOnboarding();
-    }
-    
+        
+    this.startNotifications();
+    this.loadTables()
     this.loadBalance()    
     this.checkStep()
-    this.startNotifications()  
-    
+    this.startNotifications()      
     this.listenToOrderStatus();
     
     this.hasSeenOnboarding = (await this.storage.get('hasSeenOnboarding')) || false;
@@ -226,9 +227,113 @@ export class HomePage implements OnInit, AfterViewInit {
     if (!this.hasSeenOnboarding) {
       this.showOnboarding();
     }
-     
+
   }   
+
+  loadTables() {
+    this.priceService.getPriceTables().subscribe((tables) => {
+      this.priceTables = tables || [];
+
+      console.log('this.priceTables', this.priceTables)
+
+      if (this.priceTables.length > 0) {
+        this.selectedTable = this.priceTables[0];        
+      }
+    });
+  }
+
+  async updateCalculations() {
+    // Verifica se há dados suficientes para realizar o cálculo
+    if (!this.selectedTable || this.dropPoints.length < 2) {
+      console.log('!this.selectedTable || this.dropPoints.length < 2');
+      console.log(this.selectedTable);
+      console.log(this.dropPoints);
+      return;
+    }
   
+    // Ativa o loading antes de iniciar o processamento
+    this.showLoading("Carregando tabela de preços....")
+    this.serviceMsgTime = "Calculando preços....";
+  
+    try {
+      // Executa o cálculo das distâncias e tempos
+      const distanceAndTime = await this.calculateDistancesAndTimes();
+      console.log('distanceAndTime', distanceAndTime);
+  
+      // Calcula o preço com base nos dados obtidos
+      this.calculatedPrice = this.priceService.calculate(this.selectedTable, this.dropPoints, distanceAndTime);
+  
+      // Evita exibir NaN para o preço
+      if (isNaN(this.calculatedPrice.price)) {
+        this.calculatedPrice.price = '0.00';
+      }
+  
+      console.log('Preço Calculado:', this.calculatedPrice);
+  
+      // Atualiza as informações do serviço no objeto userInfo
+      this.dataService.userInfo.servicesPrices = {
+        totalDistance: this.calculatedPrice.distanceCharged,
+        totalTime: this.calculatedPrice.totalTime,
+        totalPrice: this.calculatedPrice.price,
+        driverEarnings: this.priceService.calculateDriverEarnings(this.calculatedPrice.price, this.selectedTable),
+        systemFee: this.calculatedPrice.systemFee,
+        region: this.selectedTable.region,
+      };
+  
+      console.log('servicesPrices', this.dataService.userInfo.servicesPrices);
+  
+      // Realiza a próxima etapa
+      this.loading.dismiss()
+
+
+      this.checkStep();
+  
+    } catch (error) {
+      console.error("Erro ao calcular preços:", error);
+      // Aqui você pode tratar o erro, exibindo uma mensagem para o usuário, por exemplo
+    } finally {
+      // Desativa o loading, independentemente de ter ocorrido erro ou não
+      
+      this.serviceMsgTime = "";
+    }
+  }
+  
+
+  async calculateDistancesAndTimes() {
+    let totalDistance = 0;
+    let totalTime = 0;
+
+    for (let i = 0; i < this.dropPoints.length - 1; i++) {
+      const from = this.dropPoints[i].description;
+      const to = this.dropPoints[i + 1].description;
+
+      const { distance, duration } = await this.geolocationService.calculateDistanceAndTime(from, to);
+      this.dropPoints[i + 1].distanceFromPrevious = distance;
+      this.dropPoints[i + 1].timeFromPrevious = duration;
+
+      totalDistance += distance;
+      totalTime += duration;
+    }
+
+    const returnPoint = this.dropPoints.find((point) => point.isReturn);
+    if (returnPoint) {
+      const lastPoint = this.dropPoints[this.dropPoints.length - 2].description;
+      const { distance, duration } = await this.geolocationService.calculateDistanceAndTime(lastPoint, returnPoint.description);
+
+      returnPoint.distanceFromPrevious = distance;
+      returnPoint.timeFromPrevious = duration;
+
+      totalDistance += distance;
+      totalTime += duration;
+    }
+
+    this.totalDistance = parseFloat(totalDistance.toFixed(2));
+    this.totalTime = parseFloat(totalTime.toFixed(2));
+
+    return { totalDistance, totalTime };
+  }
+
+ 
   async showOnboarding() {
     const modal = await this.modalController.create({
       component: OnboardingPage,
@@ -262,17 +367,16 @@ export class HomePage implements OnInit, AfterViewInit {
 
 
   checkStep() {
-    this.route.queryParamMap.subscribe((queryParams) => {
-      const fromPrices = queryParams.get('fromPrices') === 'true';
+    const fromPrices = this.fromPrices
   
-      if (fromPrices) {  
-        this.updateServiceMessages();
-        this.plotRouteOnMap();
-      } else {
-        this.initializePage();
-      }
-    });
-  }
+    if (fromPrices) {  
+      this.updateServiceMessages();
+      this.plotRouteOnMap();
+
+    } else {
+      this.initializePage();
+    }
+}
   
   // Atualiza as mensagens de distância, tempo e preço
   updateServiceMessages() {
@@ -614,6 +718,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
   checkBalanceBeforeProceed() {
     const minimumBalance = 20;
+
     if (this.currentBalance < minimumBalance) {
       this.uiUtils.showAlertError('Saldo insuficiente para fazer um pedido. O saldo mínimo é de $20.').then(() => {
         this.alertCtrl.create({
@@ -655,16 +760,20 @@ export class HomePage implements OnInit, AfterViewInit {
       });
     });
            
-    this.router.navigate(['/search']);
+    this.fromPrices = true
+
+    console.log('traceRoutes dropPoints', this.dataService.userInfo.dropPoints)
+    this.dropPoints = this.dataService.userInfo.dropPoints
+    this.updateCalculations();    
+    
   }
   
-  navigateToSearchPage() {
-    this.router.navigate(['/search']);
-  }
-
 
   async plotRouteOnMap() {
-    if (!this.dataService.userInfo.dropPoints || this.dataService.userInfo.dropPoints.length < 2) return;
+    if (!this.dataService.userInfo.dropPoints || this.dataService.userInfo.dropPoints.length < 2){
+      console.log('Sem pontos de serviço')
+      return;
+    }
   
     const waypoints = this.dataService.userInfo.dropPoints.slice(1, -1).map((point) => ({
       location: point.description,
@@ -702,9 +811,7 @@ export class HomePage implements OnInit, AfterViewInit {
       } else {
         console.error('Erro ao traçar a rota:', status);
       }
-    });
-    
-    this.fromPrices = true;
+    });        
   }
   
 
@@ -792,6 +899,7 @@ clearRoute() {
   }
 
   async listenToOrderStatus() {
+
     this.db.listenToDocument(`orders`).subscribe(async (orders: any) => {
         if (!orders) {
             console.log('Nenhuma ordem disponível no Firebase.');
@@ -941,12 +1049,12 @@ clearRoute() {
     this.alertCtrl
       .create({
         header: 'Pedido Aceito',
-        message: `Seu pedido foi aceito por um entregador Para mais detalhes, clique no historico.`,
+        message: `Seu pedido foi aceito por um motorista Para mais detalhes, clique no historico.`,
         buttons: [{
           text: 'OK',
           handler: () => {                        
             this.dataService.selectedOrder = order
-            this.uiUtils.presentToast(`Seu pedido foi aceito por um entregador.`)
+            this.uiUtils.presentToast(`Seu pedido foi aceito por um motorista.`)
             //this.router.navigate(['/details']);
           }
         }],
@@ -1020,11 +1128,10 @@ clearRoute() {
       this.router.navigate(['/login']);
     });
   }
-  
-
- 
+   
 
   toggleDetails(order: any) {
+
     order.showDetails = !order.showDetails; // Alterna o estado de exibição
   
     // Atualiza o texto e o ícone do botão com base no estado
@@ -1060,10 +1167,7 @@ clearRoute() {
 
     else {
       this.uiUtils.showAlertError(this.dataText.getText('currentStatusNotWaiting'))
-    }
-
-
-    
+    }    
   }
 
   cancelOrder(order: any) {
@@ -1145,7 +1249,7 @@ clearRoute() {
           text: 'Sim',
           handler: () => {
             console.log('Abrindo chatbot para o pedido:', key);
-            window.open('https://chatbot.motokapp.com.br?key=' + key + '&userId=' + userId, '_blank');
+            window.open('https://chatbot.pedmoto.com.br?key=' + key + '&userId=' + userId, '_blank');
           },
         },
         {
@@ -1173,7 +1277,7 @@ clearRoute() {
           text: 'Sim',
           handler: () => {
             console.log('Abrindo chatbot para o pedido:', key);
-            window.open('https://chatbot.motokapp.com.br?key=' + key + '&userId=' + userId, '_blank');
+            window.open('https://chatbot.pedmoto.com.br?key=' + key + '&userId=' + userId, '_blank');
           },
         },
         {

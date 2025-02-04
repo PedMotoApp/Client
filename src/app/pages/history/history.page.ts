@@ -284,7 +284,7 @@ export class HistoryPage implements OnInit {
           text: 'Sim',
           handler: () => {
             console.log('Abrindo chatbot para o pedido:', key);
-            window.open('https://chatbot.motokapp.com.br?key=' + key, '_blank');
+            window.open('https://chatbot.pedmoto.com.br?key=' + key, '_blank');
           },
         },
         {
