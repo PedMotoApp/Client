@@ -12,6 +12,9 @@ import { WalletService } from 'src/app/services/wallet.service';
 import { ToastController } from '@ionic/angular';
 import { MessageService } from 'src/app/services/message.service';
 import { NotificationService } from  'src/app/services/notification.service';
+import { Storage } from '@ionic/storage';
+import { OnboardingPage } from '../onboarding/onboarding.page';
+
 
 @Component({
   selector: 'app-driver-home',
@@ -42,6 +45,7 @@ export class DriverHomePage implements OnInit {
 
   msgInfoVisible: boolean = true;
   currentMessage: string;
+  hasSeenOnboarding: boolean = false;
 
   constructor(
     private db: DatabaseService,
@@ -55,7 +59,9 @@ export class DriverHomePage implements OnInit {
     private modalCtrl: ModalController,
     private geolocationService: GeolocationService,
     private messageService: MessageService,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    private modalController: ModalController,
+    public storage: Storage,
     
   ) {}
 
@@ -120,7 +126,27 @@ export class DriverHomePage implements OnInit {
     
     await this.startLocationUpdates();
     this.listenToOrderStatus();
+
+    this.hasSeenOnboarding = (await this.storage.get('hasSeenOnboarding')) || false;
+
+    if (!this.hasSeenOnboarding) {
+      this.showOnboarding();
+    }
   }
+
+  async showOnboarding() {
+      const modal = await this.modalController.create({
+        component: OnboardingPage,
+        cssClass: 'onboarding-modal',
+        backdropDismiss: false, // Prevent accidental dismiss
+      });
+    
+      await modal.present();
+      await modal.onDidDismiss();
+    
+      // Salva no storage para não exibir novamente
+      await this.storage.set('hasSeenOnboarding', true);
+    }
 
 
   startNotifications(){
