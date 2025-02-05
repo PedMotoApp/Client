@@ -1229,7 +1229,7 @@ clearRoute() {
         }
       },
       error: (error) => {
-        console.error('Erro ao carregar saldo:', error);
+        console.error('Erro ao carregar saldo:', JSON.stringify(error));
         this.currentBalance = 0
       },
     });

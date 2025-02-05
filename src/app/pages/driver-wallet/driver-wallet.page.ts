@@ -45,7 +45,7 @@ export class DriverWalletPage implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Erro ao carregar saldo:', error);
+        console.error('Erro ao carregar saldo:', JSON.stringify(error));
         this.presentToast(this.dataText.getText('loadBalanceError'), 'danger');
       },
     });
