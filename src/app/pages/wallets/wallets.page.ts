@@ -176,6 +176,7 @@ export class WalletsPage implements OnInit, AfterViewInit {
       next: (response) => {
         if (response.success) {
           this.currentBalance = response.balance;
+          console.log('this.currentBalance', this.currentBalance)
         } else {
           console.error('Erro ao carregar saldo:', response.message);
         }

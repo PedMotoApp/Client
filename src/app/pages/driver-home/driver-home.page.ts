@@ -66,7 +66,8 @@ export class DriverHomePage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    
+    await this.storage.create(); // Inicializa o Storage
+
     await this.loadGoogleMapsApi();
     
   }

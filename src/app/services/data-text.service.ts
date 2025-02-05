@@ -144,6 +144,8 @@ export class DataTextService {
         errorLogin3: 'Sua conta foi removida. Por favor, entre em contato com o suporte.',
         errorLogin4: 'Sua conta está inativa. Por favor, entre em contato com o suporte.',
         errorLogin5: 'Informações do perfil incompletas. Complete seu perfil.',
+        errorLogin6: 'Usuário não encontrado. Verifique suas informações.',
+        errorLogin7: 'Erro desconhecido. Por favor, tente novamente mais tarde.',
         warning: 'Aviso',
         yes: 'Sim',
         no: 'Não',
