@@ -6,51 +6,35 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class WalletService {
-  private apiUrl = 'https://api.pedmoto.com.br/api/wallets';
+  private apiUrl = 'https://us-central1-pedmoto-b5358.cloudfunctions.net'; // Firebase Functions
 
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
-    const token = 'seu_token_aqui'; // Substitua pelo token real
+    const token = 'seu_token_aqui'; // Substitua pelo token real se necessário
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  }
-
-  createPreference(amount: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/create-preference`, { amount }, { headers });
   }
 
   // Obter saldo do usuário
   getBalance(userId: string): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.apiUrl}/balance`, {
-      headers,
+    return this.http.get(`${this.apiUrl}/getBalance`, {
       params: { userId },
     });
   }
 
-  // Iniciar o checkout para obter o preferenceId
-  initiateCheckout(amount: number, userId: string): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/checkout`, { amount, userId }, { headers });
-  }
-
   // Processar pagamento com os dados do cartão
   processPayment(cardData: any): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/process-payment`, cardData, { headers });
+    return this.http.post(`${this.apiUrl}/processPayment`, cardData);
   }
 
   // Atualiza o saldo do usuário
   updateBalance(userId: string, amount: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/update-balance`, { userId, amount }, { headers });
+    return this.http.post(`${this.apiUrl}/updateBalance`, { userId, amount });
   }
 
   // Diminui o saldo do usuário
   decreaseBalance(userId: string, amount: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/decrease-balance`, { userId, amount }, { headers });
+    return this.http.post(`${this.apiUrl}/decreaseBalance`, { userId, amount });
   }
 
   // Adiciona o histórico de uma ordem
@@ -61,22 +45,17 @@ export class WalletService {
     amount: number;
     finalizedAt: string;
   }): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/add-to-history`, order, { headers });
+    return this.http.post(`${this.apiUrl}/addToHistory`, order);
   }
 
   // Solicitar retirada
   requestWithdrawal(userId: string, amount: number): Observable<any> {
-    const headers = this.getAuthHeaders();    
-    return this.http.post(`${this.apiUrl}/request-withdrawal`, { userId, amount }, { headers });
+    return this.http.post(`${this.apiUrl}/requestWithdrawal`, { userId, amount });
   }
 
-  
-   // Obter histórico de retiradas
-   getWithdrawalHistory(userId: string): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.apiUrl}/withdrawal-history`, {
-      headers,
+  // Obter histórico de retiradas
+  getWithdrawalHistory(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getWithdrawalHistory`, {
       params: { userId },
     });
   }
