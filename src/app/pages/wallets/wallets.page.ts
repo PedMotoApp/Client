@@ -170,13 +170,19 @@ export class WalletsPage implements OnInit, AfterViewInit {
 
 
   loadBalance() {
+
     const userId = this.dataService.userInfo.userId;
+    console.log('loadBalance', userId)
 
     this.walletService.getBalance(userId).subscribe({
       next: (response) => {
         if (response.success) {
           this.currentBalance = response.balance;
+
+
           console.log('this.currentBalance', this.currentBalance)
+
+
         } else {
           console.error('Erro ao carregar saldo:', response.message);
         }
