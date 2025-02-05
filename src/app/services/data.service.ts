@@ -16,7 +16,7 @@ export class DataService {
   appTermsPriv = "https://privacidade.pedmoto.com.br";
 
   isHome = false;
-  appName = "pedmoto";    
+  appName = "Pedmoto";    
   appUserType = 1; // 1 = Client, 2 = Professional  
   isWeb = false;
   defaultState = 'DF';
