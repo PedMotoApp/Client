@@ -347,9 +347,10 @@ export class LoginPage implements OnInit, OnDestroy {
 
 
   signInWithApple() {
-    this.authService.loginInWithApple()
+    this.authService.signInWithApple()
       .then((result) => {
         
+        console.log('signInWithApple', result)
         this.goPageHomeUser()
       })
       .catch((error) => this.uiUtils.showAlertError(error));
