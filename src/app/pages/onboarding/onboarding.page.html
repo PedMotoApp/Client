@@ -1,8 +1,14 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Pedmoto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeOnboarding()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content [fullscreen]="true" class="onboarding-container">
   <ion-slides pager="true" class="onboarding-slides">
