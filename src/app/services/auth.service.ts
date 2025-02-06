@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { User } from 'firebase/auth';
 import { GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth'; // Importação explícita
-import { getAuth, OAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth";
+import { getAuth, signInWithPopup, OAuthProvider } from "firebase/auth";
 import * as moment from 'moment';
 
 @Injectable({
@@ -43,35 +43,20 @@ export class AuthService {
     }
   }
 
-
-  async loginInWithApple() {
+  async signInWithApple() {
     const auth = getAuth();
-  
-    return getRedirectResult(auth)
-    .then((result) => {
-      if (result) {
-        console.log("Usuário autenticado com Apple:", result);
-      }
-    })
-    .catch((error) => {
-      console.error("Erro ao autenticar com Apple:", error);
-    });
-  }
-  
-  // Handle the redirect result
-  async handleAppleSignInRedirect() {
-    const auth = getAuth();
+    const provider = new OAuthProvider('apple.com');
     
-    getRedirectResult(auth)
+    return signInWithPopup(auth, provider)
       .then((result) => {
-        if (result.user) {
-          console.log("Usuário autenticado com Apple:", result.user);
-        }
+        console.log("Usuário autenticado com Apple:", result.user);
+        return result.user;
       })
       .catch((error) => {
         console.error("Erro ao autenticar com Apple:", error);
       });
-  }
+}
+
 
   async loginWithFacebook() {
     const provider = new FacebookAuthProvider(); // Uso do FacebookAuthProvider com importação explícita
