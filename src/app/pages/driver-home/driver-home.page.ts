@@ -67,7 +67,6 @@ export class DriverHomePage implements OnInit {
 
   async ngOnInit() {
     await this.storage.create(); // Inicializa o Storage
-
     await this.loadGoogleMapsApi();
     
   }
@@ -129,6 +128,7 @@ export class DriverHomePage implements OnInit {
     this.listenToOrderStatus();
 
     this.hasSeenOnboarding = (await this.storage.get('hasSeenOnboarding')) || false;
+    //this.hasSeenOnboarding = false
 
     if (!this.hasSeenOnboarding) {
       this.showOnboarding();

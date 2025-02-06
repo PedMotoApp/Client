@@ -719,6 +719,10 @@ export class HomePage implements OnInit, AfterViewInit {
   checkBalanceBeforeProceed() {
     const minimumBalance = 20;
 
+    if(this.dataService.userInfo.freeRide){
+      this.currentBalance = 1000
+    }
+
     if (this.currentBalance < minimumBalance) {
       this.uiUtils.showAlertError('Saldo insuficiente para fazer um pedido. O saldo mínimo é de $20.').then(() => {
         this.alertCtrl.create({

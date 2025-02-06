@@ -68,6 +68,17 @@ export class OnboardingPage implements OnInit {
   }
 
   closeOnboarding() {
-    this.modalCtrl.dismiss(); // Fecha o modal
+    // If this page is presented as a modal:
+    try {
+      this.modalCtrl.dismiss(); 
+    } catch (error) {
+      // If dismiss fails (e.g., not a modal), handle fallback navigation
+      if(this.dataService.appUserType === 2){
+        this.router.navigate(['/driver']);
+      } else {
+        this.router.navigate(['/home']);
+      }
+    }
   }
+  
 }
