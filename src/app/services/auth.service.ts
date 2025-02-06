@@ -4,8 +4,13 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { User } from 'firebase/auth';
 import { GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth'; // Importação explícita
-import { getAuth, signInWithPopup, OAuthProvider } from "firebase/auth";
 import * as moment from 'moment';
+import { OAuthProvider } from 'firebase/auth';
+
+import { Plugins } from '@capacitor/core';
+
+const { SignInWithApple } = Plugins;
+
 
 @Injectable({
   providedIn: 'root',
@@ -44,17 +49,18 @@ export class AuthService {
   }
 
   async signInWithApple() {
-    const auth = getAuth();
-    const provider = new OAuthProvider('apple.com');
-    
-    return signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log("Usuário autenticado com Apple:", result.user);
-        return result.user;
-      })
-      .catch((error) => {
-        console.error("Erro ao autenticar com Apple:", error);
+    try {
+      const response = await SignInWithApple.Authorize();
+      const { identityToken } = response.response;
+      const provider = new OAuthProvider('apple.com');
+      const credential = provider.credential({
+        idToken: identityToken,
       });
+      const userCredential = await this.afAuth.signInWithCredential(credential);
+      console.log('Usuário autenticado com Apple:', userCredential.user);
+    } catch (error) {
+      console.error('Erro ao autenticar com Apple:', error);
+    }
 }
 
 
