@@ -43,11 +43,19 @@ export class AuthService {
     }
   }
 
-  async signInWithApple() {
+
+  async loginInWithApple() {
     const auth = getAuth();
-    const provider = new OAuthProvider('apple.com');
   
-    return signInWithRedirect(auth, provider);
+    return getRedirectResult(auth)
+    .then((result) => {
+      if (result) {
+        console.log("Usuário autenticado com Apple:", result);
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao autenticar com Apple:", error);
+    });
   }
   
   // Handle the redirect result
