@@ -333,7 +333,20 @@ export class LoginPage implements OnInit, OnDestroy {
     this.iab.create(url, this.dataInfo.isWeb ? '_blank' : '_system', options);
   }
 
+
+
+  
   signInWithGoogle() {
+    this.authService.loginWithGoogle()
+      .then((result) => {
+        console.log("Usuário autenticado:", result.user);
+        this.goPageHomeUser()
+      })
+      .catch((error) => this.uiUtils.showAlertError(error));
+  }
+
+
+  signInWithApple() {
     this.authService.loginWithGoogle()
       .then((result) => {
         console.log("Usuário autenticado:", result.user);
