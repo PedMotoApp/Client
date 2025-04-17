@@ -7,9 +7,9 @@ import { GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth'; // Imp
 import * as moment from 'moment';
 import { OAuthProvider } from 'firebase/auth';
 
-import { Plugins } from '@capacitor/core';
+//import { Plugins } from '@capacitor/core';
 
-const { SignInWithApple } = Plugins;
+//const { SignInWithApple } = Plugins;
 
 
 @Injectable({
@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   async signInWithApple() {
-    try {
+    /*try {
       const response = await SignInWithApple.Authorize();
       const { identityToken } = response.response;
       const provider = new OAuthProvider('apple.com');
@@ -60,7 +60,7 @@ export class AuthService {
       console.log('Usuário autenticado com Apple:', userCredential.user);
     } catch (error) {
       console.error('Erro ao autenticar com Apple:', error);
-    }
+    }*/
 }
 
 

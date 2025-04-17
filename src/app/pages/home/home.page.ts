@@ -719,6 +719,8 @@ export class HomePage implements OnInit, AfterViewInit {
   checkBalanceBeforeProceed() {
     const minimumBalance = 20;
 
+    this.dataService.userInfo.freeRide = 1000 // Coloque true para todos os usuários vim com crédito para testar
+    
     if(this.dataService.userInfo.freeRide){
       this.currentBalance = 1000
     }
