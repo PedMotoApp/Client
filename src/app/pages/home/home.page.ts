@@ -133,8 +133,8 @@ export class HomePage implements OnInit, AfterViewInit {
     // Check if a Google Maps script already exists
     if (document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]')) return;
 
-    const key = "AIzaSyBW86YtgtmOHTvHl0uWvjfol_H6t4SeDzU";
-    // const key = environment.firebaseConfig.apiKey;
+    // const key = "AIzaSyBW86YtgtmOHTvHl0uWvjfol_H6t4SeDzU";
+    const key = environment.firebaseConfig.apiKey;
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places`;
     script.async = true;
@@ -717,11 +717,12 @@ export class HomePage implements OnInit, AfterViewInit {
 
 
   checkBalanceBeforeProceed() {
-    const minimumBalance = 20;
-
-    this.dataService.userInfo.freeRide = 1000 // Coloque true para todos os usuários vim com crédito para testar
+    const minimumBalance = 20;    
     
-    if(this.dataService.userInfo.freeRide){
+    this.dataService.userInfo.assinante = true;
+    this.uiUtils.showToast("Você ganhou 1000 créditos para testar!")
+
+    if(this.dataService.userInfo.assinante){
       this.currentBalance = 1000
     }
 

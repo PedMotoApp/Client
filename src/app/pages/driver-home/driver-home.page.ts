@@ -14,7 +14,7 @@ import { MessageService } from 'src/app/services/message.service';
 import { NotificationService } from  'src/app/services/notification.service';
 import { Storage } from '@ionic/storage';
 import { OnboardingPage } from '../onboarding/onboarding.page';
-
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-driver-home',
@@ -90,7 +90,8 @@ export class DriverHomePage implements OnInit {
   async loadGoogleMapsApi(): Promise<void> {
     if (this.googleMapsLoaded) return;
   
-    const key = "AIzaSyBW86YtgtmOHTvHl0uWvjfol_H6t4SeDzU";
+    //const key = "AIzaSyBW86YtgtmOHTvHl0uWvjfol_H6t4SeDzU";
+    const key = environment.firebaseConfig.apiKey;  
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&loading=async`;
     script.async = true;
