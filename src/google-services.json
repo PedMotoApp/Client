@@ -1,66 +1,46 @@
 {
   "project_info": {
-    "project_number": "586536055929",
-    "firebase_url": "https://motok-7d13a-default-rtdb.firebaseio.com",
-    "project_id": "motok-7d13a",
-    "storage_bucket": "motok-7d13a.appspot.com"
+    "project_number": "979953795342",
+    "firebase_url": "https://pedmoto-b5358-default-rtdb.firebaseio.com",
+    "project_id": "pedmoto-b5358",
+    "storage_bucket": "pedmoto-b5358.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:586536055929:android:244fa3e80313f81efb10a8",
+        "mobilesdk_app_id": "1:979953795342:android:0d431472c9ab6eea26575f",
         "android_client_info": {
-          "package_name": "com.motokapp.app"
+          "package_name": "com.dbltecnologia.pedmoto"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "586536055929-dsrgdhbjhf5ocd1dl55b48voqbuf39ip.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCiuE1YMRwHCBLwNL7cnZzfhJjf-Uhxih4"
+          "current_key": "AIzaSyCziJtbaEEuim1O56QDkkSI7pjlsYPLXIM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "586536055929-dsrgdhbjhf5ocd1dl55b48voqbuf39ip.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:586536055929:android:bdc0211b1d038043fb10a8",
+        "mobilesdk_app_id": "1:979953795342:android:00cd684e6e0d9b8926575f",
         "android_client_info": {
-          "package_name": "com.motokapp.pro"
+          "package_name": "com.dbltecnologia.pedmotomotorista"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "586536055929-dsrgdhbjhf5ocd1dl55b48voqbuf39ip.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCiuE1YMRwHCBLwNL7cnZzfhJjf-Uhxih4"
+          "current_key": "AIzaSyCziJtbaEEuim1O56QDkkSI7pjlsYPLXIM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "586536055929-dsrgdhbjhf5ocd1dl55b48voqbuf39ip.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

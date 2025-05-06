@@ -335,9 +335,16 @@ export class DriverHomePage implements OnInit {
         datetime: new Date().toISOString(),
       });
   
-      const response = await this.walletService.decreaseBalance(order.userId, amountToDecrease).toPromise();
+      
+      let isTest = true
+
+      if(! this.dataService.userInfo.assinante){
+        const response = await this.walletService.decreaseBalance(order.userId, amountToDecrease).toPromise();
+        const responseOk = response.success      
+        isTest = responseOk
+      }
   
-      if (response.success) {
+      if (isTest) {
          this.presentToast(`Saldo separado com sucesso! Começando serviço!`, 'success');
         this.dataService.selectedOrder = order;
         this.router.navigate(['/details']);
