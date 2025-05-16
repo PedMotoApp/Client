@@ -1,0 +1,4 @@
+-keep class com.ionicframework.cordova.webview.** { *; }
+-keep class org.apache.cordova.** { *; }
+-dontwarn com.ionicframework.cordova.webview.**
+-dontwarn org.apache.cordova.**

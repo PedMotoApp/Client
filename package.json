@@ -60,7 +60,7 @@
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-inappbrowser": "^4.1.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
-    "cordova-plugin-ionic-webview": "^4.2.1",
+    "cordova-plugin-ionic-webview": "^5.0.0",
     "cordova-plugin-splashscreen": "^5.0.4",
     "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-whitelist": "^1.3.5",
@@ -77,9 +77,6 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {
-        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
-      },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-fcm-with-dependecy-updated": {
@@ -97,7 +94,8 @@
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "Utilizamos sua localização para exibir o mapa, calcular rotas e otimizar entregas.",
         "GPS_REQUIRED": "true"
-      }
+      },
+      "cordova-plugin-ionic-webview": {}
     },
     "platforms": [
       "browser",

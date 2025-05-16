@@ -3822,10 +3822,10 @@
   "resolved" "https://registry.npmjs.org/cordova-plugin-ionic-keyboard/-/cordova-plugin-ionic-keyboard-2.2.0.tgz"
   "version" "2.2.0"
 
-"cordova-plugin-ionic-webview@^4.2.1":
-  "integrity" "sha512-7KrmqLaOGq1RP8N2z1ezN1kqkWFzTwwMvQ3/qAkd+exxFZuOe3DIN4eaU1gdNphsxdirI8Ajnr9q4So5vQbWqw=="
-  "resolved" "https://registry.npmjs.org/cordova-plugin-ionic-webview/-/cordova-plugin-ionic-webview-4.2.1.tgz"
-  "version" "4.2.1"
+"cordova-plugin-ionic-webview@^5.0.0":
+  "integrity" "sha512-Wq0kCanxubK/JroTW4Mp5soayScnRyiY1eCkbwiz1Dyt1xHOiOW/v+1miqtBHtnZhcXw25TulCKAVJzkNBdmyg=="
+  "resolved" "https://registry.npmjs.org/cordova-plugin-ionic-webview/-/cordova-plugin-ionic-webview-5.0.0.tgz"
+  "version" "5.0.0"
 
 "cordova-plugin-splashscreen@^5.0.4":
   "integrity" "sha512-zmyhBrObNuwDH4KB4zuZrJ9IKC113EM6KJpqC0/2f3o9GRznPk1S4j9O9rosJT4EASg4X3hdssv9XkAH3D5ZYg=="

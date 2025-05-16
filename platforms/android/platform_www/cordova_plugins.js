@@ -79,14 +79,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       ]
     },
     {
-      "id": "cordova-plugin-ionic-webview.IonicWebView",
-      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
-      "pluginId": "cordova-plugin-ionic-webview",
-      "clobbers": [
-        "Ionic.WebView"
-      ]
-    },
-    {
       "id": "cordova-plugin-splashscreen.SplashScreen",
       "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
       "pluginId": "cordova-plugin-splashscreen",
@@ -109,6 +101,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "SQLitePlugin"
       ]
+    },
+    {
+      "id": "cordova-plugin-ionic-webview.IonicWebView",
+      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
+      "pluginId": "cordova-plugin-ionic-webview",
+      "clobbers": [
+        "Ionic.WebView"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -119,10 +119,10 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-geolocation": "5.0.0",
     "cordova-plugin-inappbrowser": "4.1.0",
     "cordova-plugin-ionic-keyboard": "2.2.0",
-    "cordova-plugin-ionic-webview": "4.2.1",
     "cordova-plugin-splashscreen": "5.0.4",
     "cordova-plugin-statusbar": "2.4.3",
     "cordova-plugin-whitelist": "1.3.5",
-    "cordova-sqlite-storage": "6.1.0"
+    "cordova-sqlite-storage": "6.1.0",
+    "cordova-plugin-ionic-webview": "5.0.0"
   };
 });

@@ -1,0 +1,4 @@
+key.store=/home/diego/Downloads/my-release-key-ORIGINAL.keystore
+key.store.password=123diego
+key.alias=Principal
+key.alias.password=123diego
