@@ -1,4 +1,6 @@
 -keep class com.ionicframework.cordova.webview.** { *; }
+-keep class com.gae.scaffolder.plugin.** { *; }
 -keep class org.apache.cordova.** { *; }
 -dontwarn com.ionicframework.cordova.webview.**
+-dontwarn com.gae.scaffolder.plugin.**
 -dontwarn org.apache.cordova.**

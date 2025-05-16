@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.dbltecnologia.pedmoto;
+package com.dbltecnologia.pedmotomotorista;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
