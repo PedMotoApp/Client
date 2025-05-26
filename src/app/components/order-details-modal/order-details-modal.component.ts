@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-order-details-modal',
@@ -10,14 +10,32 @@ export class OrderDetailsModalComponent {
   @Input() order: any;
   @Input() driverCommission: number;
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
+  ) {}
 
-  
-  dismiss() {
-    this.modalCtrl.dismiss();
+  async dismiss() {
+    await this.modalCtrl.dismiss();
   }
 
-  acceptOrder() {
-    this.modalCtrl.dismiss({ accepted: true });
+  async confirmAcceptOrder() {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar Aceitação',
+      message: 'Deseja aceitar este pedido?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Aceitar',
+          handler: () => {
+            this.modalCtrl.dismiss({ accepted: true });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

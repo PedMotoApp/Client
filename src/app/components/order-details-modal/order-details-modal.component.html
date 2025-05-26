@@ -1,15 +1,23 @@
-<div class="modal-content">
-  <div class="modal-header">
-    <h1>Detalhes do Pedido</h1>
-    <ion-icon name="close-outline" (click)="dismiss()"></ion-icon>
-  </div>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Detalhes do Pedido</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content class="ion-padding">
   <div class="info-card">
     <h2>Informações Gerais</h2>
-    <p><strong>Origem:</strong> Praça dos Três Poderes, Brasília - DF</p>
-    <p><strong>Destino:</strong> Parque da Cidade Sarah Kubitschek, Brasília - DF</p>
-    <p><strong>Valor Total:</strong> R$ 17,80</p>
-    <p><strong>Lucro:</strong> R$ 1,78</p>
+    <p><strong>Data de Solicitação:</strong> {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+    <p *ngIf="order.startedAt"><strong>Data de Início:</strong> {{ order.startedAt | date:'dd/MM/yyyy HH:mm' }}</p>
+    <p><strong>Origem:</strong> {{ order.dropPoints[0]?.description }}</p>
+    <p><strong>Destino:</strong> {{ order.dropPoints[order.dropPoints.length - 1]?.description }}</p>
+    <p><strong>Valor Total:</strong> R$ {{ order.servicesPrices?.totalPrice | number:'1.2-2' }}</p>
+    <p><strong>Lucro:</strong> R$ {{ (order.servicesPrices?.driverEarnings || 0) | number:'1.2-2' }}</p>
   </div>
 
   <div class="delivery-points">
@@ -22,22 +30,17 @@
       <p><strong>Responsável:</strong> {{ point.responsible || 'N/A' }}</p>
       <p><strong>Pagamento:</strong> {{ point.payment || 'N/A' }}</p>
       <p class="highlight">
-        <strong>Distância Total:</strong> {{ point.totalDistance || 'N/A' }} km
+        <strong>Distância Total:</strong> {{ point.distanceToNext || 'N/A' }} km
       </p>
       <p class="highlight">
-        <strong>Tempo Estimado:</strong> {{ point.totalTime || 'N/A' }} mins
+        <strong>Tempo Estimado:</strong> {{ point.timeToNext || 'N/A' }} min
       </p>
     </div>
   </div>
-
-
-</div>
-
-
-
+</ion-content>
 
 <ion-footer>
-  <ion-button expand="block" color="success" (click)="acceptOrder()">
-    Aceitar 
+  <ion-button expand="block" color="success" (click)="confirmAcceptOrder()">
+    Aceitar
   </ion-button>
 </ion-footer>

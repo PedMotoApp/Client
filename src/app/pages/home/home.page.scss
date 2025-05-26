@@ -177,9 +177,12 @@ ion-list {
   justify-content: flex-end;
 }
 
+
+
+/* Estilo existente */
 .services-section {
-  background-color: #e3f2fd;
-  border-left: 4px solid #2196f3;
+  background: var(--ion-color-light);
+  border-radius: 8px;
   padding: 1rem;
   margin-top: 1rem;
 
@@ -188,48 +191,18 @@ ion-list {
     margin-bottom: 1rem;
     text-align: center;
     font-weight: bold;
-    
+    color: #333;
   }
 
   .scroll-section {
-    // display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem; /* Espaço entre os cards */
+    gap: 0.5rem;
 
     .service-card {
       margin: 0;
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
-      margin-top: 5px;
-
-      .order-details {
-        margin-top: 1rem;
-        padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    
-        p, li {
-          font-size: 0.9rem;
-          color: #333;
-        }
-    
-        h5 {
-          font-size: 1rem;
-          margin-bottom: 0.5rem;
-          color: var(--ion-color-primary);
-        }
-      }
-    
-      .details-button ion-icon {
-        margin-right: 0.5rem;
-        color: var(--ion-color-primary);
-      }
-    
-      .cancel-button {
-        --background: var(--ion-color-danger);
-        --color: white;
-      }
+      margin-bottom: 10px;
 
       ion-card-content {
         display: flex;
@@ -263,39 +236,52 @@ ion-list {
         }
       }
 
-      .details-button {
-        align-self: flex-end;
+      .action-buttons {
+        display: flex;
+        justify-content: space-between;
         margin-top: 0.5rem;
-        --background: var(--ion-color-primary);
-        --color: white;
-        font-size: 0.8rem;
-        height: 30px;
-        padding: 0 10px;
 
-        ion-icon {
-          font-size: 1rem;
-          margin-right: 0.2rem;
+        ion-button {
+          flex: 1;
+          margin: 0 0.2rem;
+          font-size: 0.8rem;
+          height: 30px;
+
+          ion-icon {
+            font-size: 1rem;
+            margin-right: 0.2rem;
+          }
         }
-      }
 
-      .cancel-button {
-        align-self: flex-end;
-        --background: var(--ion-color-danger);
-        --color: white;
-        font-size: 0.8rem;
-        height: 30px;
-        padding: 0 10px;
-
-        ion-icon {
-          font-size: 1rem;
-          margin-right: 0.2rem;
+        .details-button {
+          --background: var(--ion-color-primary);
+          --color: white;
         }
+
+        .cancel-button {
+          --background: var(--ion-color-danger);
+          --color: white;
+        }
+
+        .remove-button {
+          --background: var(--ion-color-medium);
+          --color: white;
+        }
+
       }
     }
   }
 }
 
+.map-container {
+  height: 150px; /* Ajustar conforme necessário */
+}
 
+/* Novo estilo para status vencido */
+.expired-status {
+  color: red;
+  font-weight: bold;
+}
 
 
 ion-content.home-container {

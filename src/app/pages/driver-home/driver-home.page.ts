@@ -27,7 +27,7 @@ export class DriverHomePage implements OnInit {
   locationUpdateInterval: any;
   googleMapsLoaded: boolean = false;
   showGeneralData: boolean = false;
-  statusJob: 'online' | 'offline' = 'offline'; // Initialize as offline
+  statusJob: 'online' | 'offline' = 'offline';
 
   overview = {
     totalServices: 0,
@@ -69,7 +69,7 @@ export class DriverHomePage implements OnInit {
 
   async ionViewWillEnter() {
     if (this.dataService.isHome) {
-      await this.loadStatusJob(); // Load status on page enter
+      await this.loadStatusJob();
       this.startInterface();
     } else {
       this.router.navigate(['/login']);
@@ -90,7 +90,6 @@ export class DriverHomePage implements OnInit {
     }
   }
 
-  // Load statusJob from database
   async loadStatusJob() {
     const userId = this.dataService.userInfo.userId;
     try {
@@ -98,19 +97,18 @@ export class DriverHomePage implements OnInit {
       this.statusJob = userProfile?.statusJob || 'offline';
     } catch (error) {
       console.error('Error loading statusJob:', error);
-      this.statusJob = 'offline'; // Default to offline on error
+      this.statusJob = 'offline';
       await this.presentToast('Erro ao carregar status. Definido como offline.', 'danger');
     }
   }
 
-  // Toggle online/offline status
   async toggleStatus() {
     const newStatus = this.statusJob === 'online' ? 'offline' : 'online';
     const userId = this.dataService.userInfo.userId;
     try {
       await this.db.updateDocument(`/userProfile/${userId}`, { statusJob: newStatus });
       this.statusJob = newStatus;
-      this.dataService.userInfo.statusJob = newStatus; // Update local userInfo
+      this.dataService.userInfo.statusJob = newStatus;
       await this.presentToast(
         `Status alterado para ${newStatus === 'online' ? 'Online' : 'Offline'}.`,
         newStatus === 'online' ? 'success' : 'danger'
@@ -131,16 +129,23 @@ export class DriverHomePage implements OnInit {
 
         const ordersArray = Array.isArray(orders)
           ? orders
-          : Object.keys(orders).map((key) => ({
-              key,
-              ...orders[key],
-            }));
+          : Object.keys(orders).map((key) => ({ key, ...orders[key] }));
+
+        // Filtrar ordens com mais de 1 hora
+        const validityThreshold = new Date();
+        //validityThreshold.setHours(validityThreshold.getHours() - environment.orderValidityHours);
+        validityThreshold.setHours(validityThreshold.getHours() - 1);
 
         for (const order of ordersArray) {
           console.log('📌 Pedido:', order.key, order.status);
 
-          if (order.status === 'Cancelado' || order.status === 'Finalizado') {
-            console.log(`🗑️ Removendo ordem ${order.key} (${order.status})`);
+          const createdAt = new Date(order.createdAt);
+          if (
+            order.status === 'Cancelado' ||
+            order.status === 'Finalizado' ||
+            createdAt < validityThreshold
+          ) {
+            console.log(`🗑️ Removendo ordem ${order.key} (${order.status || 'Antiga'})`);
             continue;
           }
 
@@ -155,7 +160,6 @@ export class DriverHomePage implements OnInit {
           }
 
           if (order.status === 'Aguardando') {
-            // Skip orders if driver is offline
             if (this.statusJob === 'offline') {
               await this.presentToast(
                 'Você perdeu um chamado por estar offline. Mude para online para receber pedidos.',
@@ -224,11 +228,14 @@ export class DriverHomePage implements OnInit {
     const amountToDecrease = Number(order?.servicesPrices?.totalPrice) || 10;
 
     try {
+      // Registrar data de início do serviço
+      const startedAt = new Date().toISOString();
       await this.db.updateDocument(`orders/${order.key}`, {
         status: 'Aceito',
         driverId: userId,
         driver: this.dataService.userInfo,
         datetime: new Date().toISOString(),
+        startedAt
       });
 
       let isTest = true;
@@ -252,7 +259,6 @@ export class DriverHomePage implements OnInit {
     }
   }
 
-  // Existing methods (unchanged unless noted)
   async ensureLocationPermission() {
     try {
       const hasPermission = await this.geolocationService.checkLocationPermission();

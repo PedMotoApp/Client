@@ -250,26 +250,28 @@ export class HomePage implements OnInit, AfterViewInit {
       console.log(this.dropPoints);
       return;
     }
-  
+
     // Ativa o loading antes de iniciar o processamento
-    this.showLoading("Carregando tabela de preços....")
+    this.showLoading("Carregando tabela de preços....");
     this.serviceMsgTime = "Calculando preços....";
-  
+
     try {
       // Executa o cálculo das distâncias e tempos
       const distanceAndTime = await this.calculateDistancesAndTimes();
       console.log('distanceAndTime', distanceAndTime);
-  
+
       // Calcula o preço com base nos dados obtidos
       this.calculatedPrice = this.priceService.calculate(this.selectedTable, this.dropPoints, distanceAndTime);
-  
+
       // Evita exibir NaN para o preço
       if (isNaN(this.calculatedPrice.price)) {
         this.calculatedPrice.price = '0.00';
       }
-  
+
+
+
       console.log('Preço Calculado:', this.calculatedPrice);
-  
+
       // Atualiza as informações do serviço no objeto userInfo
       this.dataService.userInfo.servicesPrices = {
         totalDistance: this.calculatedPrice.distanceCharged,
@@ -279,22 +281,40 @@ export class HomePage implements OnInit, AfterViewInit {
         systemFee: this.calculatedPrice.systemFee,
         region: this.selectedTable.region,
       };
-  
+
       console.log('servicesPrices', this.dataService.userInfo.servicesPrices);
-  
-      // Realiza a próxima etapa
-      this.loading.dismiss()
 
-
+      // Realiza a próxima etapa apenas se não houver erro
+      this.loading.dismiss();
       this.checkStep();
-  
+
     } catch (error) {
-      console.error("Erro ao calcular preços:", error);
-      // Aqui você pode tratar o erro, exibindo uma mensagem para o usuário, por exemplo
-    } finally {
-      // Desativa o loading, independentemente de ter ocorrido erro ou não
-      
+      // Exibe mensagem de erro e interrompe o fluxo
+      if (error && error.message && error.message.includes('NOT_FOUND')) {
+        this.uiUtils.showAlertError('Não foi possível calcular a rota. Verifique se todos os endereços estão corretos e tente novamente.');
+      } else {
+        this.uiUtils.showAlertError('Erro ao calcular preços. Por favor, verifique os endereços e tente novamente.');
+      }
+      // Reverte o estado para impedir continuidade
+      this.fromPrices = false;
+      // Limpa os valores exibidos para evitar confusão
+      this.serviceMsgDistance = "";
       this.serviceMsgTime = "";
+      this.serviceMsgPrice = "";
+      this.dataService.userInfo.servicesPrices = {};
+      this.dropPoints = [];
+      // Forçar atualização da UI
+      this.zone.run(() => {
+        this.serviceMsgTime = "";
+      });
+    } finally {
+      // Desativa o loading e limpa a mensagem em todos os casos
+      if (this.loading) {
+        this.loading.dismiss();
+      }
+      this.zone.run(() => {
+        this.serviceMsgTime = "";
+      });
     }
   }
   
@@ -717,13 +737,11 @@ export class HomePage implements OnInit, AfterViewInit {
 
 
   checkBalanceBeforeProceed() {
-    const minimumBalance = 20;    
-    
-    this.dataService.userInfo.assinante = true;
-    this.uiUtils.showToast("Você ganhou 1000 créditos para testar!")
+    const minimumBalance = 20;                
 
     if(this.dataService.userInfo.assinante){
       this.currentBalance = 1000
+      this.uiUtils.showToast("Você ganhou 1000 créditos por ser assinante!");
     }
 
     if (this.currentBalance < minimumBalance) {
@@ -866,6 +884,12 @@ clearRoute() {
   
 
   async sendRequest() {
+
+    if(!this.selectedTable){
+      this.uiUtils.showAlertError('Nenhuma tabela de preços criada. Favor entrar em contato com o suporte.');
+      return;
+    }
+
     const alert = await this.alertCtrl.create({
       header: 'Confirmar Solicitação',
       message: 'Você deseja enviar esta solicitação? O valor será diminuído do total da sua carteira.',
@@ -906,101 +930,137 @@ clearRoute() {
   }
 
   async listenToOrderStatus() {
-
     this.db.listenToDocument(`orders`).subscribe(async (orders: any) => {
-        if (!orders) {
-            console.log('Nenhuma ordem disponível no Firebase.');
-            this.availableOrders = [];
-            return;
+      if (!orders) {
+        console.log('Nenhuma ordem disponível no Firebase.');
+        this.availableOrders = [];
+        return;
+      }
+
+      console.log('🚀 Atualizando ordens em tempo real...');
+
+      const ordersArray = Array.isArray(orders)
+        ? orders
+        : Object.keys(orders).map((key) => ({
+            key,
+            ...orders[key],
+          }));
+
+      let position: GeolocationPosition | null = null;
+      try {
+        position = await this.geolocationService.getCurrentPosition();
+        console.log('📍 Localização obtida:', position.coords.latitude, position.coords.longitude);
+      } catch (error) {
+        console.error('❌ Erro ao obter localização:', error);
+      }
+
+      let latitude = position?.coords.latitude || null;
+      let longitude = position?.coords.longitude || null;
+
+      const updatedOrders = [];
+
+      for (const order of ordersArray) {
+        console.log('🔄 Processando ordem:', order.key, order.status);
+
+        if (order.status === 'Cancelado' || order.status === 'Finalizado') {
+          console.log(`⚠️ Removendo ordem ${order.key} (${order.status})`);
+          continue;
         }
 
-        console.log('🚀 Atualizando ordens em tempo real...');
+        this.notifyPointStatusChange(order);
 
-        // 🔄 Converte para array (caso seja um objeto no iOS)
-        const ordersArray = Array.isArray(orders)
-            ? orders
-            : Object.keys(orders).map((key) => ({
-                key,
-                ...orders[key],
-            }));
+        if (order.status === 'Aguardando') {
+          // Validação de expiração: checar se a ordem tem mais de 1 hora
+          const createdAt = new Date(order.createdAt);
+          const now = new Date();
+          const timeDiff = now.getTime() - createdAt.getTime();
+          const hoursDiff = timeDiff / (1000 * 60 * 60); // Diferença em horas
+          const isExpired = hoursDiff > 6; // Mais de 6 horas 
 
-        console.log('ordersArray', JSON.stringify(ordersArray, null, 2));
+          console.log(`Ordem ${order.key} criada há ${hoursDiff.toFixed(2)} horas. Expirada: ${isExpired}`);
 
-        // 🚀 Aguarda a permissão de localização antes de obter a posição
-        let position: GeolocationPosition | null = null;
-        try {
-            position = await this.geolocationService.getCurrentPosition();
-            console.log('📍 Localização obtida:', position.coords.latitude, position.coords.longitude);
-        } catch (error) {
-            console.error('❌ Erro ao obter localização:', error);
-        }
+          // Definir status visual para exibição na UI
+          order.displayStatus = isExpired ? 'Vencido' : order.status;
+          order.isExpired = isExpired; // Campo auxiliar para controle na UI
 
-        let latitude = position?.coords.latitude || null;
-        let longitude = position?.coords.longitude || null;
+          const collectionPoint = order.dropPoints?.[0]?.description;
 
-        const updatedOrders = [];
-
-        for (const order of ordersArray) {
-            console.log('🔄 Processando ordem:', order.key, order.status);
-
-            // 🛑 Remove ordens com status "Cancelado" ou "Finalizado"
-            if (order.status === 'Cancelado' || order.status === 'Finalizado') {
-                console.log(`⚠️ Removendo ordem ${order.key} (${order.status})`);
-                continue;
+          if (collectionPoint && latitude !== null && longitude !== null) {
+            try {
+              const { distance, duration } = await this.geolocationService.calculateDistanceAndTime(
+                `${latitude},${longitude}`,
+                collectionPoint
+              );
+              order.collectionDistance = `${distance.toFixed(2)} km`;
+              order.collectionTime = `${Math.ceil(duration)} min`;
+            } catch (error) {
+              console.error('❌ Erro ao calcular distância do ponto de coleta:', error);
+              order.collectionDistance = 'Erro';
+              order.collectionTime = 'Erro';
             }
+          }
 
-            this.notifyPointStatusChange(order);
+          console.log(order.servicesPrices);
 
-            if (order.status === 'Aguardando') {
-                // 🏁 Calcula a distância do entregador até o ponto de coleta
-                const collectionPoint = order.dropPoints?.[0]?.description;
+          order.calculatedDistance = order.servicesPrices?.totalDistance;
+          order.calculatedDistance = order.calculatedDistance ? order.calculatedDistance.toFixed(2) : 'N/A';
+          order.estimatedTime = order.servicesPrices?.totalTime || 'N/A';
 
-                if (collectionPoint && latitude !== null && longitude !== null) {
-                    try {
-                        const { distance, duration } = await this.geolocationService.calculateDistanceAndTime(
-                            `${latitude},${longitude}`,
-                            collectionPoint
-                        );
-                        order.collectionDistance = `${distance.toFixed(2)} km`;
-                        order.collectionTime = `${Math.ceil(duration)} min`;
-                    } catch (error) {
-                        console.error('❌ Erro ao calcular distância do ponto de coleta:', error);
-                        order.collectionDistance = 'Erro';
-                        order.collectionTime = 'Erro';
-                    }
+          if (order.dropPoints.length > 1) {
+            // Calcular distâncias e tempos entre os pontos
+            // Nota: distanceToNext e timeToNext só são atribuídos ao ponto atual (i), não ao último ponto (i + 1)
+            for (let i = 0; i < order.dropPoints.length - 1; i++) {
+              const currentPoint = order.dropPoints[i]?.description;
+              const nextPoint = order.dropPoints[i + 1]?.description;
+
+              if (currentPoint && nextPoint) {
+                try {
+                  const { distance, duration } = await this.geolocationService.calculateDistanceAndTime(
+                    currentPoint,
+                    nextPoint
+                  );
+                  order.dropPoints[i].distanceToNext = `${distance.toFixed(2)} km`;
+                  order.dropPoints[i].timeToNext = `${Math.ceil(duration)} min`;
+                } catch (error) {
+                  console.error('❌ Erro ao calcular distância entre pontos:', error);
+                  order.dropPoints[i].distanceToNext = 'Erro';
+                  order.dropPoints[i].timeToNext = 'Erro';
                 }
-
-                // 🔄 Calcula distâncias e tempos entre os pontos
-                if (order.dropPoints.length > 1) {
-                    for (let i = 0; i < order.dropPoints.length - 1; i++) {
-                        const currentPoint = order.dropPoints[i]?.description;
-                        const nextPoint = order.dropPoints[i + 1]?.description;
-
-                        if (currentPoint && nextPoint) {
-                            try {
-                                const { distance, duration } = await this.geolocationService.calculateDistanceAndTime(
-                                    currentPoint,
-                                    nextPoint
-                                );
-                                order.dropPoints[i].distanceToNext = `${distance.toFixed(2)} km`;
-                                order.dropPoints[i].timeToNext = `${Math.ceil(duration)} min`;
-                            } catch (error) {
-                                console.error('❌ Erro ao calcular distância entre pontos:', error);
-                                order.dropPoints[i].distanceToNext = 'Erro';
-                                order.dropPoints[i].timeToNext = 'Erro';
-                            }
-                        }
-                    }
-                }
+              }
             }
-
-            updatedOrders.push(order);
+          }
         }
 
-        this.availableOrders = updatedOrders;
-        console.log('✅ Pedidos disponíveis:', JSON.stringify(this.availableOrders, null, 2));
+        updatedOrders.push(order);
+      }
+
+      // Ordena as ordens pelo createdAt (mais novos primeiro)
+      updatedOrders.sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return dateB - dateA;
+      });
+      this.availableOrders = updatedOrders;
     });
-}
+  }
+
+  // Novo método para remover a ordem
+  async removeOrder(order: any) {
+    try {
+      // Atualizar o status no banco de dados para "Vencida"
+      await this.db.updateDocument(`orders/${order.key}`, {
+        status: 'Vencida',
+        updatedAt: new Date().toISOString()
+      });
+
+      // Remover a ordem da lista local
+      this.availableOrders = this.availableOrders.filter(o => o.key !== order.key);
+      this.uiUtils.showToast('Ordem removida com sucesso!');
+    } catch (error) {
+      console.error('Erro ao remover ordem:', error);
+      this.uiUtils.showToast('Erro ao remover a ordem. Tente novamente.');
+    }
+  }
 
   
     
